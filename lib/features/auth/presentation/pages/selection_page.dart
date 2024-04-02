@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:routines/features/auth/data/datasource/auth_remote_data_source.dart';
 import 'package:routines/features/auth/presentation/widgets/custom_dialogbox_widget.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
@@ -41,8 +42,9 @@ class _SelectionPageState extends State<SelectionPage> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-                onPressed: () {
+                onPressed: (){
                    CustomDialog().customDialog();
+          
                 },
                 child: const Text(
                   "Setup Your Routines",
