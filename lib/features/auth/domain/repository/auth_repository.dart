@@ -7,4 +7,11 @@ abstract interface class AuthRepository {
     required String branch,
   });
 
+  Future<Either<Failure, List<String>>> getElectiveSubjectDetails({
+    required String year,
+    required String branch,
+    
+  });
+  
+
 }

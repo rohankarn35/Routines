@@ -42,8 +42,9 @@ class _SelectionPageState extends State<SelectionPage> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-                onPressed: (){
-                   CustomDialog().customDialog();
+                onPressed: ()async{
+                  //  CustomDialog().customDialog();
+               print( await  AuthRemoteDataSourceImpl().getElectiveSubjectDetails(year: "2nd year", branch: "CSE"));
           
                 },
                 child: const Text(

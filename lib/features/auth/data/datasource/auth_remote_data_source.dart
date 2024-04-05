@@ -9,6 +9,10 @@ abstract interface class AuthRemoteDataSource {
     required String year,
     required String branch,
   });
+  Future<List<String>> getElectiveSubjectDetails({
+    required String year,
+    required String branch,
+  });
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -38,6 +42,24 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       return jsonString;
     } catch (e) {
       throw const ServerException("Server Error");
+    }
+  }
+
+  @override
+  Future<List<String>> getElectiveSubjectDetails({
+    required String year,
+    required String branch,
+  }) async {
+    
+    try {
+        final branchdetails = await branchDetails(year: year, branch: branch);
+        final Map<String, dynamic> data = jsonDecode(branchdetails);
+        print(data['elective']);
+        return ["jgbdjh","dfsdjhfhsjdf"];
+      
+    } catch (e) {
+      print(e);
+      throw UnimplementedError();
     }
   }
 }
