@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:routines/core/theme/theme.dart';
+import 'package:routines/features/auth/data/datasource/auth_remote_data_source.dart';
+import 'package:routines/features/auth/data/repository/auth_repository_impl.dart';
+import 'package:routines/features/auth/domain/usecases/allDetails.dart';
+import 'package:routines/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:routines/features/auth/presentation/pages/selection_page.dart';
-
+import 'package:routines/injection.dart';
 
 void main() {
-  runApp(const MyApp());
+  initDependencies();
+  runApp(MultiBlocProvider(
+    providers: [
+      BlocProvider(
+        create: (_) => serviceLocator<AuthBloc>(),
+      )
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -21,4 +34,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
