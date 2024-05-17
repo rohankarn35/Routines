@@ -9,10 +9,11 @@ abstract interface class AuthRemoteDataSource {
     required String year,
     required String branch,
   });
-  Future<List<String>> getElectiveSubjectDetails({
+  Future<String> getElectiveSubjectDetails({
     required String year,
     required String branch,
   });
+  Future<String> getAllDetails();
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -22,7 +23,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String branch,
   }) async {
     try {
-      final response = await Dio().get(AppSecrets.branchdetailsApi);
+      final response = await Dio().get(AppSecrets.apiURL);
       final responseData = response.data;
       final Map<String, dynamic> data = jsonDecode(responseData);
       if (!data.containsKey(year) ||
@@ -46,20 +47,29 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<List<String>> getElectiveSubjectDetails({
+  Future<String> getElectiveSubjectDetails({
     required String year,
     required String branch,
   }) async {
-    
     try {
-        final branchdetails = await branchDetails(year: year, branch: branch);
-        final Map<String, dynamic> data = jsonDecode(branchdetails);
-        print(data['elective']);
-        return ["jgbdjh","dfsdjhfhsjdf"];
-      
+      final branchdetails = await branchDetails(year: year, branch: branch);
+      final Map<String, dynamic> data = jsonDecode(branchdetails);
+      return data['elective'].toString();
     } catch (e) {
-      print(e);
       throw UnimplementedError();
+    }
+  }
+
+  @override
+  Future<String> getAllDetails() async {
+    try {
+      final response = await Dio().get(AppSecrets.apiURL);
+      final responseData = response.data;
+      final Map<String, dynamic> data = jsonDecode(responseData);
+      final String jsonString = jsonEncode(data);
+      return jsonString;
+    } catch (e) {
+      throw ServerException("An Error Occured");
     }
   }
 }

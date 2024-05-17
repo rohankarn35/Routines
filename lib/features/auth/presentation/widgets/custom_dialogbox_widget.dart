@@ -28,7 +28,7 @@ class CustomDialog {
             height: 20,
           ),
           CustomDropDown(
-            title: "Select Branches",
+            title: "Branch",
             list: branches,
           ),
         ],

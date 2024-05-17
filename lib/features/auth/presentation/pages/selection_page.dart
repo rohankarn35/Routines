@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:routines/features/auth/data/datasource/auth_remote_data_source.dart';
+import 'package:routines/features/auth/domain/usecases/allDetails.dart';
 import 'package:routines/features/auth/presentation/widgets/custom_dialogbox_widget.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
@@ -42,10 +43,10 @@ class _SelectionPageState extends State<SelectionPage> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-                onPressed: ()async{
-                  //  CustomDialog().customDialog();
-               print( await  AuthRemoteDataSourceImpl().getElectiveSubjectDetails(year: "2nd year", branch: "CSE"));
-          
+                onPressed: () async {
+                  CustomDialog().customDialog();
+                  print(await AuthRemoteDataSourceImpl().getAllDetails());
+                  
                 },
                 child: const Text(
                   "Setup Your Routines",

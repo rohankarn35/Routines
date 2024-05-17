@@ -22,10 +22,21 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(Failure(e.message));
     }
   }
-  
+
   @override
-  Future<Either<Failure, List<String>>> getElectiveSubjectDetails({required String year, required String branch}) {
+  Future<Either<Failure, String>> getElectiveSubjectDetails(
+      {required String year, required String branch}) {
     // TODO: implement getElectiveSubjectDetails
     throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, String>> getAllDetails() async {
+    try {
+      final allDetails = await authRemoteDataSource.getAllDetails();
+      return Right(allDetails);
+    } on ServerException catch (e) {
+      return Left(Failure(e.message));
+    }
   }
 }
