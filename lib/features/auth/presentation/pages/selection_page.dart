@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:routines/features/auth/data/datasource/auth_remote_data_source.dart';
-import 'package:routines/features/auth/domain/usecases/allDetails.dart';
 import 'package:routines/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:routines/features/auth/presentation/widgets/custom_dialogbox_widget.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
@@ -46,7 +44,7 @@ class _SelectionPageState extends State<SelectionPage> {
                   ),
                 ),
                 onPressed: () async {
-                  // CustomDialog().customDialog();
+                  CustomDialog().customDialog();
                   // print(await AuthRemoteDataSourceImpl().getAllDetails());
                   context.read<AuthBloc>().add(AuthSetupButtonClicked());
                   

@@ -21,7 +21,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
             isExpanded: true,
             hint:  Text(
               'Select ${widget.title}',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
