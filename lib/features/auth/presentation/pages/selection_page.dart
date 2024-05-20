@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:routines/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:routines/core/utils/toastbar.dart';
 import 'package:routines/features/auth/presentation/widgets/custom_dialogbox_widget.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
@@ -43,10 +42,12 @@ class _SelectionPageState extends State<SelectionPage> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-                onPressed: () async {
+                onPressed: ()  {
                   CustomDialog().customDialog();
                   // print(await AuthRemoteDataSourceImpl().getAllDetails());
-                  context.read<AuthBloc>().add(AuthSetupButtonClicked());
+                  // context.read<AuthBloc>().add(AuthSetupButtonClicked());
+                  // print("clicked");
+                  // showToast("Button pressed");
                   
                 },
                 child: const Text(

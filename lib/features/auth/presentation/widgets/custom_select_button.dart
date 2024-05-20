@@ -1,33 +1,41 @@
 import 'package:flutter/material.dart';
 
-class CustomSelectButtonWidget extends StatefulWidget {
+class CustomSelectButtonWidget extends StatelessWidget {
   final String title;
-  const CustomSelectButtonWidget({super.key, required this.title});
+  final bool isSelected;
+  final VoidCallback onTap;
+  final double height;
+  final double width;
 
-  @override
-  State<CustomSelectButtonWidget> createState() =>
-      _CustomSelectButtonWidgetState();
-}
+  const CustomSelectButtonWidget({
+    Key? key,
+    required this.title,
+    required this.isSelected,
+    required this.onTap, required this.height, required this.width,
+  }) : super(key: key);
 
-class _CustomSelectButtonWidgetState extends State<CustomSelectButtonWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        width: 120,
-        height: 50,
-        child: OutlinedButton(
-          style: OutlinedButton.styleFrom(
-            textStyle: const TextStyle(color: Colors.white),
-            backgroundColor: Colors.transparent,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
+      width: width,
+      height: height,
+      child: OutlinedButton(
+        style: OutlinedButton.styleFrom(
+          backgroundColor: isSelected ? Colors.green.shade500 : Colors.transparent,
+          side: BorderSide(color: isSelected ? Colors.greenAccent : Colors.grey),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
           ),
-          onPressed: () {},
-          child: Text(
-            widget.title,
-            style: TextStyle(color: Colors.white, fontSize: 16),
+        ),
+        onPressed: onTap,
+        child: Text(
+          title,
+          style: TextStyle(
+            color: isSelected ? Colors.white : Colors.white60,
+            fontSize: 15,
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

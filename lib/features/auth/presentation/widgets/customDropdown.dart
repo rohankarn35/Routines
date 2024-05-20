@@ -15,7 +15,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 10, right: 10),
+      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
       child: DropdownButtonHideUnderline(
           child: DropdownButton2<String>(
             isExpanded: true,
