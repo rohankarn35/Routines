@@ -8,7 +8,7 @@ class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource authRemoteDataSource;
   const AuthRepositoryImpl(this.authRemoteDataSource);
   @override
-  Future<Either<Failure, String>> branchDetails({
+  Future<Either<Failure, List<int>>> branchDetails({
     required String year,
     required String branch,
   }) async {
