@@ -25,9 +25,14 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<Failure, String>> getElectiveSubjectDetails(
-      {required String year, required String branch}) {
-    // TODO: implement getElectiveSubjectDetails
-    throw UnimplementedError();
+      {required String year, required String branch}) async {
+    try {
+      final getDetails = await authRemoteDataSource.getElectiveSubjectDetails(
+          year: year, branch: branch);
+      return Right(getDetails);
+    } on ServerException catch (e) {
+      return Left(Failure(e.message));
+    }
   }
 
   @override

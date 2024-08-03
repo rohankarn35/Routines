@@ -3,13 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:routines/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:routines/features/auth/presentation/widgets/buttonselect.dart';
+import 'package:routines/features/auth/presentation/widgets/coreDropDown.dart';
+import 'package:routines/features/auth/presentation/widgets/droupdowngroup.dart';
 
 class CustomDialog {
   final List<String> branches = ['CSE', 'CSSE', 'CSCE', 'IT'];
   final List<String> years = ['2nd Year', '3rd Year'];
-  bool isYearSelected = false;
-  bool isBranchSelected = false;
   bool isWrapSelected = false;
+  String year = "";
+  String branch = "";
 
   void customDialog(BuildContext context) {
     Get.defaultDialog(
@@ -19,10 +21,25 @@ class CustomDialog {
       content: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthYearButton) {
-            print("Dialog selected title: ${state.year}");
+            // print("Dialog selected title: ${state.year}");
+            // year = state.year;
+            if (state.year == "2nd Year") {
+              year = "second";
+            } else if (state.year == "3rd Year") {
+              year = "third";
+            }
+
+            if (year.isNotEmpty && branch.isNotEmpty) {
+              context.read<AuthBloc>().add(
+                  AuthBranchAndYearSelectedEvent(branch: branch, year: year));
+            }
           }
           if (state is AuthBranchButton) {
-            print("Selected Year ${state.branch}");
+            // print("Selected Year ${state.branch}");
+            branch = state.branch;
+
+            context.read<AuthBloc>().add(
+                AuthBranchAndYearSelectedEvent(branch: branch, year: year));
           }
           if (state is AuthButtonSelectIsWrapState) {
             isWrapSelected = state.isWrap;
@@ -61,7 +78,11 @@ class CustomDialog {
                     : SizedBox(
                         height: 0,
                       ),
-                // DropDownGroup(),
+                const SizedBox(
+                  height: 20,
+                ),
+                Coredropdown(),
+                DropDownGroup()
               ],
             ),
           );

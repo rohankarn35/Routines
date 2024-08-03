@@ -3,6 +3,7 @@ import 'package:routines/features/auth/data/datasource/auth_remote_data_source.d
 import 'package:routines/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:routines/features/auth/domain/repository/auth_repository.dart';
 import 'package:routines/features/auth/domain/usecases/allDetails.dart';
+import 'package:routines/features/auth/domain/usecases/sectionNumber_usecase.dart';
 import 'package:routines/features/auth/presentation/bloc/auth_bloc.dart';
 
 final serviceLocator = GetIt.instance;
@@ -21,7 +22,9 @@ void _initAuth() {
   serviceLocator.registerFactory(
     () => AllDetails(serviceLocator()),
   );
+  serviceLocator.registerFactory(() => SectionnumberUsecase(serviceLocator()));
   serviceLocator.registerLazySingleton(
-    () => AuthBloc(allDetails: serviceLocator()),
+    () => AuthBloc(
+        allDetails: serviceLocator(), sectionNumberUsecase: serviceLocator()),
   );
 }

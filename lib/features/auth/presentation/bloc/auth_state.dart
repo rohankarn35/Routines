@@ -40,3 +40,15 @@ final class AuthButtonSelectIsWrapState extends AuthState {
 
   AuthButtonSelectIsWrapState({required this.isWrap});
 }
+
+final class AuthBranchAndYearSelectedState extends AuthState {
+  final List<int> numbers;
+
+  AuthBranchAndYearSelectedState({required this.numbers});
+}
+
+final class AuthSectionNameSelectedState extends AuthState {
+  final String? sectionName;
+
+  AuthSectionNameSelectedState({required this.sectionName});
+}

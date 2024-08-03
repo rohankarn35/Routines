@@ -30,10 +30,6 @@ class _ButtonSelectionGroupState extends State<ButtonSelectionGroup> {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        if (state is AuthButtonGroupSelected) {
-          selectedTitle = state.title;
-        }
-
         return widget.isWrap
             ? Wrap(
                 spacing: 10,
@@ -52,12 +48,7 @@ class _ButtonSelectionGroupState extends State<ButtonSelectionGroup> {
                           .add(AuthButtonSelectionGroupSelected(title: title));
 
                       setState(() {
-                        if (title == "2nd Year") {
-                          selectedTitle = "second";
-                        }
-                        if (title == "3rd Year") {
-                          selectedTitle = "third";
-                        }
+                        selectedTitle = title;
                       });
                       widget.onSelect(title);
                     },

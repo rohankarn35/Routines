@@ -28,3 +28,15 @@ final class AuthButtonSelectIsWrapEvent extends AuthEvent {
 
   AuthButtonSelectIsWrapEvent({required this.isWrap});
 }
+
+final class AuthBranchAndYearSelectedEvent extends AuthEvent {
+  final String branch;
+  final String year;
+  AuthBranchAndYearSelectedEvent({required this.branch, required this.year});
+}
+
+final class AuthSectionNameSelectedEvent extends AuthEvent {
+  final String? sectionName;
+
+  AuthSectionNameSelectedEvent({required this.sectionName});
+}

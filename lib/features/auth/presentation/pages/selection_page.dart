@@ -1,6 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:routines/core/utils/get_alldetails.dart';
 import 'package:routines/core/utils/toastbar.dart';
+import 'package:routines/features/auth/data/datasource/auth_remote_data_source.dart';
+import 'package:routines/features/auth/data/models/elective_model.dart';
+import 'package:routines/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:routines/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:routines/features/auth/presentation/widgets/custom_dialogbox_widget.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
@@ -68,7 +74,20 @@ class _SelectionPageState extends State<SelectionPage> {
                       // await CheckAllDetailsAvailable().checkAllDetails();
 
                       // CustomDialog().customDialog(context);
-                      context.read<AuthBloc>().add(AuthSetupButtonClicked());
+                      // context.read<AuthBloc>().add(
+                      //     AuthBranchAndYearSelectedEvent(
+                      //         branch: "CSE", year: "second"));
+                      // context.read<AuthBloc>().add(AuthSetupButtonClicked());
+                      final String response =
+                          await GetAllDetails().getAllDetails();
+                      final Map<String, dynamic> data = jsonDecode(response);
+                      final ElectiveModel electiveModel =
+                          ElectiveModel.fromJson(
+                              json: data,
+                              year: "third",
+                              branch: "CSE",
+                              elective: "elective1");
+                      print(electiveModel.electiveSubjects);
                     },
                     child: Text(
                       dialogBoxButtonText,
