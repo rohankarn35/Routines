@@ -40,3 +40,24 @@ final class AuthSectionNameSelectedEvent extends AuthEvent {
 
   AuthSectionNameSelectedEvent({required this.sectionName});
 }
+
+final class AuthGetElectiveSubjectsEvent extends AuthEvent {
+  final String branch;
+  final String year;
+  final String elective;
+
+  AuthGetElectiveSubjectsEvent(
+      {required this.branch, required this.year, required this.elective});
+}
+
+final class AuthCoreSectionDetailsEvent extends AuthEvent {
+  final String coreSection;
+
+  AuthCoreSectionDetailsEvent({required this.coreSection});
+}
+
+final class AuthElectiveSectionDetailsEvent extends AuthEvent {
+  final List<String> electiveDetails;
+
+  AuthElectiveSectionDetailsEvent({required this.electiveDetails});
+}

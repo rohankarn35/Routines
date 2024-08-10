@@ -52,3 +52,21 @@ final class AuthSectionNameSelectedState extends AuthState {
 
   AuthSectionNameSelectedState({required this.sectionName});
 }
+
+final class AuthGetElectiveSubjectsState extends AuthState {
+  final Map<String, dynamic> electiveDetails;
+
+  AuthGetElectiveSubjectsState({required this.electiveDetails});
+}
+
+final class AuthCoreSectionDetailsState extends AuthState {
+  final String coreSection;
+
+  AuthCoreSectionDetailsState({required this.coreSection});
+}
+
+final class AuthElectiveSectionDetailsState extends AuthState {
+  final List<String> electiveList;
+
+  AuthElectiveSectionDetailsState({required this.electiveList});
+}

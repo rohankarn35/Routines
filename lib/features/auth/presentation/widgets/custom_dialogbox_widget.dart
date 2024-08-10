@@ -12,6 +12,9 @@ class CustomDialog {
   bool isWrapSelected = false;
   String year = "";
   String branch = "";
+  String coreSection = "";
+  List<String> electiveDetails = [];
+  int num = 0;
 
   void customDialog(BuildContext context) {
     Get.defaultDialog(
@@ -21,11 +24,11 @@ class CustomDialog {
       content: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthYearButton) {
-            // print("Dialog selected title: ${state.year}");
-            // year = state.year;
+            coreSection = "";
             if (state.year == "2nd Year") {
               year = "second";
-            } else if (state.year == "3rd Year") {
+            }
+            if (state.year == "3rd Year") {
               year = "third";
             }
 
@@ -35,7 +38,9 @@ class CustomDialog {
             }
           }
           if (state is AuthBranchButton) {
-            // print("Selected Year ${state.branch}");
+            electiveDetails.clear();
+            coreSection = "";
+
             branch = state.branch;
 
             context.read<AuthBloc>().add(
@@ -44,47 +49,57 @@ class CustomDialog {
           if (state is AuthButtonSelectIsWrapState) {
             isWrapSelected = state.isWrap;
           }
+          if (state is AuthBranchAndYearSelectedState) {
+            num = state.numbers[1];
+          }
+
+          if (state is AuthCoreSectionDetailsState) {
+            coreSection = state.coreSection;
+          }
+          if (state is AuthElectiveSectionDetailsState) {
+            if (num == state.electiveList.length) {
+              electiveDetails = state.electiveList;
+            }
+          }
         },
         builder: (context, state) {
-          return SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ButtonSelectionGroup(
-                  titles: years,
-                  onSelect: (selectedYear) {
-                    context
-                        .read<AuthBloc>()
-                        .add(AuthYearButtonClicked(year: selectedYear));
-                  },
-                  height: 50,
-                  width: 120,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                isWrapSelected
-                    ? ButtonSelectionGroup(
-                        titles: branches,
-                        onSelect: (selectedBranch) {
-                          context
-                              .read<AuthBloc>()
-                              .add(AuthBranchClicked(branch: selectedBranch));
-                        },
-                        height: 50,
-                        width: 100,
-                        isWrap: true,
-                      )
-                    : SizedBox(
-                        height: 0,
-                      ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Coredropdown(),
-                DropDownGroup()
-              ],
-            ),
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ButtonSelectionGroup(
+                titles: years,
+                onSelect: (selectedYear) {
+                  context
+                      .read<AuthBloc>()
+                      .add(AuthYearButtonClicked(year: selectedYear));
+                },
+                height: 50,
+                width: 120,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              isWrapSelected
+                  ? ButtonSelectionGroup(
+                      titles: branches,
+                      onSelect: (selectedBranch) {
+                        context
+                            .read<AuthBloc>()
+                            .add(AuthBranchClicked(branch: selectedBranch));
+                      },
+                      height: 50,
+                      width: 100,
+                      isWrap: true,
+                    )
+                  : const SizedBox(
+                      height: 0,
+                    ),
+              const SizedBox(
+                height: 20,
+              ),
+              Coredropdown(),
+              DropDownGroup(),
+            ],
           );
         },
       ),

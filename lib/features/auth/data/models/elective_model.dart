@@ -8,6 +8,13 @@ class ElectiveModel extends ElectiveModelEntity {
       required String year,
       required String branch,
       required String elective}) {
+    if (year == "2nd Year") {
+      year = "second";
+    }
+    if (year == "3rd Year") {
+      year = "third";
+    }
+
     return ElectiveModel(
         electiveSubjects: json[year][branch]["sub"]["elective"][elective]);
   }

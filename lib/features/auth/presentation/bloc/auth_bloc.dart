@@ -48,11 +48,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final numbers = await _branchDetails(
           BranchDetailsParams(year: event.year, branch: event.branch));
 
-      numbers.fold((l) => emit(AuthFailure("Something Went Wrong")),
+      numbers.fold((l) => emit(AuthFailure("Something went wrong")),
           (r) => emit(AuthBranchAndYearSelectedState(numbers: r)));
     });
     on<AuthSectionNameSelectedEvent>((event, emit) {
       emit(AuthSectionNameSelectedState(sectionName: event.sectionName));
+    });
+    on<AuthCoreSectionDetailsEvent>((event, emit) {
+      emit(AuthCoreSectionDetailsState(coreSection: event.coreSection));
+    });
+    on<AuthElectiveSectionDetailsEvent>((event, emit) {
+      emit(
+          AuthElectiveSectionDetailsState(electiveList: event.electiveDetails));
+    });
+
+    on<AuthGetElectiveSubjectsEvent>((event, emit) async {
+      final res = await _getelectivesubjectsUsecase(GetelectivesubjectsParams(
+          year: event.year, branch: event.branch, elective: event.elective));
+      res.fold((l) => emit(AuthFailure("An error occured, Please try again")),
+          (r) => emit(AuthGetElectiveSubjectsState(electiveDetails: r)));
     });
   }
 }

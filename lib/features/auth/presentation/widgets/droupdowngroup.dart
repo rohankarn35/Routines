@@ -12,43 +12,70 @@ class DropDownGroup extends StatefulWidget {
 
 class _DropDownGroupState extends State<DropDownGroup> {
   List<String> sub = [];
-  Map<String, String> electiveMap = {};
+  String branch = "";
+  String year = "";
+  List<String> electivesub = [];
+  List<String> electiveDetails = [];
+  final TextEditingController _textEditingController = TextEditingController();
+
+  Map<String, dynamic> electiveMap = {};
+  Map<String, Map<String, dynamic>> electivelist = {};
   int num = 0;
+  int electiveprogress = 0;
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthBloc, AuthState>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        if (state is AuthBranchAndYearSelectedState) {
-          num = state.numbers[1];
-          sub = List.generate(num, (index) => 'Elective-${index + 1}');
-
-          electiveMap = {for (var e in sub) e: ""};
-
-          return Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: sub
-                  .map((e) => CustomDropDown(
-                        title: e,
-                        list: ["list", "List"],
-                        onChanged: (value) {
-                          electiveMap[e] = value;
-                        },
-                      ))
-                  .toList());
+      listener: (context, state) async {
+        if (state is AuthBranchButton) {
+          electiveprogress = 0;
+          electiveDetails.clear();
+          branch = state.branch;
         }
-        return Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: sub
-                .map((e) => CustomDropDown(
-                      title: e,
-                      list: ["list", "List"],
-                      onChanged: (value) {
-                        electiveMap[e] = value;
-                        print(electiveMap);
-                      },
-                    ))
-                .toList());
+        if (state is AuthYearButton) {
+          electiveprogress = 0;
+          electiveDetails.clear();
+
+          year = state.year;
+        }
+        if (state is AuthBranchAndYearSelectedState) {
+          // num = 0;
+          num = state.numbers[1];
+          if (num != 0) {
+            for (int i = 0; i < num; i++) {
+              context.read<AuthBloc>().add(AuthGetElectiveSubjectsEvent(
+                  branch: branch, year: year, elective: "elective${i + 1}"));
+              sub = List.generate(num, (index) => 'Elective-${index + 1}');
+              electiveMap = {for (var e in sub) e: ""};
+            }
+          }
+        }
+        if (state is AuthGetElectiveSubjectsState) {
+          electivelist["Elective-${electiveprogress + 1}"] =
+              state.electiveDetails;
+          electiveprogress++;
+          // print(state.electiveDetails);
+        }
+      },
+      builder: (context, state) {
+        return num > 0
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: sub
+                    .map((e) => CustomDropDown(
+                          electiveMap: electivelist[e],
+                          title: e,
+                          list: electivelist[e]!.keys.toList(),
+                          onChanged: (value) {
+                            electiveMap[e] = value;
+                            electiveDetails.add(value);
+                            context.read<AuthBloc>().add(
+                                AuthElectiveSectionDetailsEvent(
+                                    electiveDetails: electiveDetails));
+                          },
+                          textEditingController: _textEditingController,
+                        ))
+                    .toList())
+            : SizedBox();
       },
     );
   }

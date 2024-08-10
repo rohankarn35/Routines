@@ -13,6 +13,14 @@ class Coredropdown extends StatefulWidget {
 }
 
 class _CoredropdownState extends State<Coredropdown> {
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  final TextEditingController _textEditingController = TextEditingController();
   int number = 0;
   String branch = "";
   List<String> sub = [];
@@ -20,37 +28,28 @@ class _CoredropdownState extends State<Coredropdown> {
   Widget build(BuildContext context) {
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
-        if (state is AuthSectionNameSelectedState) {
-          // print("Your selected section is ${state.sectionName}");
-        }
         if (state is AuthBranchButton) {
           branch = state.branch;
         }
-      },
-      builder: (context, state) {
+        if (state is AuthYearButton) {}
         if (state is AuthBranchAndYearSelectedState) {
           number = state.numbers[0];
-
-          if (branch.isNotEmpty && number > 0) {
-            sub = List.generate(number, (index) => '$branch-${index + 1}');
-          }
-
-          return CustomDropDown(
-            title: "Select Core Section",
-            list: sub,
-            onChanged: (value) {
-              print("Value of ${value}");
-            },
-          );
+          sub = List.generate(number, (index) => '$branch-${index + 1}');
         }
-
-        return CustomDropDown(
-          title: "Select Core Section",
-          list: sub,
-          onChanged: (value) {
-            print("Core section ${value}");
-          },
-        );
+      },
+      builder: (context, state) {
+        return number > 0
+            ? CustomDropDown(
+                title: "Select Core Section",
+                list: sub,
+                onChanged: (value) {
+                  context
+                      .read<AuthBloc>()
+                      .add(AuthCoreSectionDetailsEvent(coreSection: value));
+                },
+                textEditingController: _textEditingController,
+              )
+            : SizedBox();
       },
     );
   }

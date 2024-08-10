@@ -35,7 +35,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           SectionNumbersModel.fromJson(data, year, branch);
       final int core = sectionNumbersModel.core;
       final int elective = sectionNumbersModel.elective;
-
       return [core, elective];
     } catch (e) {
       throw const ServerException("Server Error");
@@ -51,18 +50,22 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     try {
       final String response = await GetAllDetails().getAllDetails();
       final Map<String, dynamic> data = jsonDecode(response);
+
       final ElectiveModel electiveModel = ElectiveModel.fromJson(
           json: data, year: year, branch: branch, elective: elective);
       return electiveModel.electiveSubjects;
     } catch (e) {
+      print(e);
       throw ServerException("Server Error");
     }
   }
 
   @override
   Future<String> getAllDetails() async {
+    print("checking");
     try {
       if (!await CheckAllDetailsAvailable().checkAllDetails()) {
+        print("e");
         final response = await Dio().get(AppSecrets.apiURL);
         final responseData = response.data;
         final Map<String, dynamic> data = jsonDecode(responseData);
@@ -70,9 +73,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         StoreDetails().storeDetails(data: jsonString);
         return jsonString;
       } else {
+        print("object");
         return GetAllDetails().getAllDetails();
       }
     } catch (e) {
+      print(e);
       throw const ServerException("An Error Occured");
     }
   }
