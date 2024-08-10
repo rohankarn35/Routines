@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:routines/features/auth/domain/usecases/allDetails.dart';
-import 'package:routines/features/auth/domain/usecases/sectionNumber_usecase.dart';
+import 'package:routines/features/auth/domain/usecases/branchDetails_usecase.dart';
+import 'package:routines/features/auth/domain/usecases/getElectiveSubjects_Usecase.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AllDetails _allDetails;
-  final SectionnumberUsecase _sectionnumberUsecase;
+  final BranchDetails _branchDetails;
+  final GetelectivesubjectsUsecase _getelectivesubjectsUsecase;
   AuthBloc({
     required AllDetails allDetails,
-    required SectionnumberUsecase sectionNumberUsecase,
+    required BranchDetails branchDetails,
+    required GetelectivesubjectsUsecase getelectivesubjectsUsecase,
   })  : _allDetails = allDetails,
-        _sectionnumberUsecase = sectionNumberUsecase,
+        _branchDetails = branchDetails,
+        _getelectivesubjectsUsecase = getelectivesubjectsUsecase,
         super(AuthInitial()) {
     on<AuthSetupButtonClicked>((event, emit) async {
       emit(AuthLoading());
@@ -41,8 +45,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
 
     on<AuthBranchAndYearSelectedEvent>((event, emit) async {
-      final numbers = await _sectionnumberUsecase(
-          SectionnumberParams(year: event.year, branch: event.branch));
+      final numbers = await _branchDetails(
+          BranchDetailsParams(year: event.year, branch: event.branch));
 
       numbers.fold((l) => emit(AuthFailure("Something Went Wrong")),
           (r) => emit(AuthBranchAndYearSelectedState(numbers: r)));

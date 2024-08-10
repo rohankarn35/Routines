@@ -14,9 +14,10 @@ abstract interface class AuthRemoteDataSource {
     required String year,
     required String branch,
   });
-  Future<String> getElectiveSubjectDetails({
+  Future<Map<String, dynamic>> getElectiveSubjectDetails({
     required String year,
     required String branch,
+    required String elective,
   });
   Future<String> getAllDetails();
 }
@@ -30,7 +31,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     try {
       final String response = await GetAllDetails().getAllDetails();
       final Map<String, dynamic> data = jsonDecode(response);
-      // print(data);
       final SectionNumbersModel sectionNumbersModel =
           SectionNumbersModel.fromJson(data, year, branch);
       final int core = sectionNumbersModel.core;
@@ -43,19 +43,19 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<String> getElectiveSubjectDetails({
+  Future<Map<String, dynamic>> getElectiveSubjectDetails({
     required String year,
     required String branch,
+    required String elective,
   }) async {
     try {
       final String response = await GetAllDetails().getAllDetails();
       final Map<String, dynamic> data = jsonDecode(response);
       final ElectiveModel electiveModel = ElectiveModel.fromJson(
-          json: data, year: year, branch: branch, elective: "elective-1");
-      print(electiveModel.electiveSubjects);
-      return data['elective'].toString();
+          json: data, year: year, branch: branch, elective: elective);
+      return electiveModel.electiveSubjects;
     } catch (e) {
-      throw UnimplementedError();
+      throw ServerException("Server Error");
     }
   }
 

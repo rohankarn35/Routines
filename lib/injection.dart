@@ -3,7 +3,8 @@ import 'package:routines/features/auth/data/datasource/auth_remote_data_source.d
 import 'package:routines/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:routines/features/auth/domain/repository/auth_repository.dart';
 import 'package:routines/features/auth/domain/usecases/allDetails.dart';
-import 'package:routines/features/auth/domain/usecases/sectionNumber_usecase.dart';
+import 'package:routines/features/auth/domain/usecases/branchDetails_usecase.dart';
+import 'package:routines/features/auth/domain/usecases/getElectiveSubjects_Usecase.dart';
 import 'package:routines/features/auth/presentation/bloc/auth_bloc.dart';
 
 final serviceLocator = GetIt.instance;
@@ -13,18 +14,33 @@ void initDependencies() {
 }
 
 void _initAuth() {
-  serviceLocator.registerFactory<AuthRemoteDataSource>(
+  // Registering Data Source
+  serviceLocator.registerLazySingleton<AuthRemoteDataSource>(
     () => AuthRemoteDataSourceImpl(),
   );
-  serviceLocator.registerFactory<AuthRepository>(
+
+  // Registering Repository
+  serviceLocator.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(serviceLocator()),
   );
-  serviceLocator.registerFactory(
+
+  // Registering Use Cases
+  serviceLocator.registerLazySingleton(
     () => AllDetails(serviceLocator()),
   );
-  serviceLocator.registerFactory(() => SectionnumberUsecase(serviceLocator()));
   serviceLocator.registerLazySingleton(
+    () => BranchDetails(serviceLocator()),
+  );
+  serviceLocator.registerLazySingleton(
+    () => GetelectivesubjectsUsecase(serviceLocator()),
+  );
+
+  // Registering Bloc
+  serviceLocator.registerFactory(
     () => AuthBloc(
-        allDetails: serviceLocator(), sectionNumberUsecase: serviceLocator()),
+      allDetails: serviceLocator(),
+      branchDetails: serviceLocator(),
+      getelectivesubjectsUsecase: serviceLocator(),
+    ),
   );
 }
