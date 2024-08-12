@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:routines/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:routines/features/auth/presentation/widgets/customDropdown.dart';
@@ -39,15 +40,18 @@ class _CoredropdownState extends State<Coredropdown> {
       },
       builder: (context, state) {
         return number > 0
-            ? CustomDropDown(
-                title: "Select Core Section",
-                list: sub,
-                onChanged: (value) {
-                  context
-                      .read<AuthBloc>()
-                      .add(AuthCoreSectionDetailsEvent(coreSection: value));
-                },
-                textEditingController: _textEditingController,
+            ? Animate(
+                effects: [MoveEffect(), FadeEffect()],
+                child: CustomDropDown(
+                  title: "Select Core Section",
+                  list: sub,
+                  onChanged: (value) {
+                    context
+                        .read<AuthBloc>()
+                        .add(AuthCoreSectionDetailsEvent(coreSection: value));
+                  },
+                  textEditingController: _textEditingController,
+                ),
               )
             : SizedBox();
       },

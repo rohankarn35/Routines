@@ -34,7 +34,7 @@ class _ButtonSelectionGroupState extends State<ButtonSelectionGroup> {
             ? Wrap(
                 spacing: 10,
                 runSpacing: 10,
-                alignment: WrapAlignment.start,
+                alignment: WrapAlignment.spaceBetween,
                 children: widget.titles.map((title) {
                   bool isSelected = title == selectedTitle;
                   return CustomSelectButtonWidget(
@@ -55,8 +55,11 @@ class _ButtonSelectionGroupState extends State<ButtonSelectionGroup> {
                   );
                 }).toList(),
               )
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+            : Wrap(
+                direction: Axis.horizontal,
+                spacing: 10,
+                runSpacing: 10,
+                alignment: WrapAlignment.spaceBetween,
                 children: widget.titles.map((title) {
                   bool isSelected = title == selectedTitle;
                   return CustomSelectButtonWidget(

@@ -11,7 +11,9 @@ class CustomSelectButtonWidget extends StatelessWidget {
     Key? key,
     required this.title,
     required this.isSelected,
-    required this.onTap, required this.height, required this.width,
+    required this.onTap,
+    required this.height,
+    required this.width,
   }) : super(key: key);
 
   @override
@@ -21,8 +23,10 @@ class CustomSelectButtonWidget extends StatelessWidget {
       height: height,
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
-          backgroundColor: isSelected ? Colors.green.shade500 : Colors.transparent,
-          side: BorderSide(color: isSelected ? Colors.greenAccent : Colors.grey),
+          backgroundColor:
+              isSelected ? Colors.green.shade500 : Colors.transparent,
+          side:
+              BorderSide(color: isSelected ? Colors.greenAccent : Colors.grey),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:routines/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:routines/features/auth/presentation/widgets/customDropdown.dart';
@@ -61,18 +62,21 @@ class _DropDownGroupState extends State<DropDownGroup> {
             ? Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: sub
-                    .map((e) => CustomDropDown(
-                          electiveMap: electivelist[e],
-                          title: e,
-                          list: electivelist[e]!.keys.toList(),
-                          onChanged: (value) {
-                            electiveMap[e] = value;
-                            electiveDetails.add(value);
-                            context.read<AuthBloc>().add(
-                                AuthElectiveSectionDetailsEvent(
-                                    electiveDetails: electiveDetails));
-                          },
-                          textEditingController: _textEditingController,
+                    .map((e) => Animate(
+                          effects: [FadeEffect(), MoveEffect()],
+                          child: CustomDropDown(
+                            electiveMap: electivelist[e],
+                            title: e,
+                            list: electivelist[e]!.keys.toList(),
+                            onChanged: (value) {
+                              electiveMap[e] = value;
+                              electiveDetails.add(value);
+                              context.read<AuthBloc>().add(
+                                  AuthElectiveSectionDetailsEvent(
+                                      electiveDetails: electiveDetails));
+                            },
+                            textEditingController: _textEditingController,
+                          ),
                         ))
                     .toList())
             : SizedBox();
