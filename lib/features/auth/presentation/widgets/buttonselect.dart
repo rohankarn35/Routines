@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:routines/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:routines/features/auth/presentation/widgets/custom_select_button.dart';
@@ -52,7 +53,13 @@ class _ButtonSelectionGroupState extends State<ButtonSelectionGroup> {
                       });
                       widget.onSelect(title);
                     },
-                  );
+                  )
+                      .animate()
+                      .slideY(
+                        begin: selectedTitle == title ? 0 : -1,
+                        duration: Duration(milliseconds: 300),
+                      )
+                      .fadeIn(duration: Duration(milliseconds: 300));
                 }).toList(),
               )
             : Wrap(
@@ -79,7 +86,13 @@ class _ButtonSelectionGroupState extends State<ButtonSelectionGroup> {
                       });
                       widget.onSelect(title);
                     },
-                  );
+                  )
+                      .animate()
+                      .slideY(
+                        begin: selectedTitle == title ? 0 : -1,
+                        duration: Duration(milliseconds: 300),
+                      )
+                      .fadeIn(duration: Duration(milliseconds: 300));
                 }).toList(),
               );
       },

@@ -5,7 +5,6 @@ import 'package:routines/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:routines/features/auth/presentation/widgets/buttonselect.dart';
 import 'package:routines/features/auth/presentation/widgets/coreDropDown.dart';
 import 'package:routines/features/auth/presentation/widgets/customSubmitButton.dart';
-import 'package:routines/features/auth/presentation/widgets/custom_select_button.dart';
 import 'package:routines/features/auth/presentation/widgets/droupdowngroup.dart';
 
 class CustomDialogContent extends StatefulWidget {
@@ -88,19 +87,16 @@ class _CustomDialogContentState extends State<CustomDialogContent> {
                       )
                     : SizedBox(),
                 isWrapSelected
-                    ? Animate(
-                        effects: [FadeEffect(), MoveEffect()],
-                        child: ButtonSelectionGroup(
-                          titles: branches,
-                          onSelect: (selectedBranch) {
-                            context
-                                .read<AuthBloc>()
-                                .add(AuthBranchClicked(branch: selectedBranch));
-                          },
-                          height: 50,
-                          width: 120,
-                          isWrap: true,
-                        ),
+                    ? ButtonSelectionGroup(
+                        titles: branches,
+                        onSelect: (selectedBranch) {
+                          context
+                              .read<AuthBloc>()
+                              .add(AuthBranchClicked(branch: selectedBranch));
+                        },
+                        height: 50,
+                        width: 120,
+                        isWrap: true,
                       )
                     : const SizedBox(
                         height: 0,
@@ -118,9 +114,19 @@ class _CustomDialogContentState extends State<CustomDialogContent> {
                       )
                     : SizedBox(),
                 isActive
-                    ? CustomSubmitButton(
-                        title: "Submit",
-                        onTap: () {},
+                    ? Animate(
+                        effects: [FadeEffect(), MoveEffect()],
+                        child: CustomSubmitButton(
+                          title: "Submit",
+                          onTap: () {
+                            Navigator.pushReplacementNamed(context, "/config",
+                                arguments: {
+                                  "year": year,
+                                  "coreSection": coreSection,
+                                  "electiveDetails": electiveDetails
+                                });
+                          },
+                        ),
                       )
                     : SizedBox()
               ],
@@ -138,7 +144,9 @@ class CustomDialog {
       barrierDismissible: true,
       context: context,
       builder: (BuildContext context) {
-        return CustomDialogContent();
+        return Animate(
+            effects: [MoveEffect(begin: Offset(0, -20))],
+            child: CustomDialogContent());
       },
     );
   }
