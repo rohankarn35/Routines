@@ -61,3 +61,14 @@ final class AuthElectiveSectionDetailsEvent extends AuthEvent {
 
   AuthElectiveSectionDetailsEvent({required this.electiveDetails});
 }
+
+final class AuthConfigRoutinesEvent extends AuthEvent {
+  final String year;
+  final String coreSection;
+  final List<String> electiveSections;
+
+  AuthConfigRoutinesEvent(
+      {required this.year,
+      required this.coreSection,
+      required this.electiveSections});
+}

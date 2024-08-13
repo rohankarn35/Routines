@@ -10,4 +10,10 @@ abstract interface class AuthRepository {
   Future<Either<Failure, Map<String, dynamic>>> getElectiveSubjectDetails(
       {required String year, required String branch, required String elective});
   Future<Either<Failure, String>> getAllDetails();
+
+  Future<Either<Failure, Map<String, dynamic>>> configRoutines({
+    required final String year,
+    required String coreSection,
+    required List<String> electiveSections,
+  });
 }

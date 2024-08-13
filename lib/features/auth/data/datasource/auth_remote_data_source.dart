@@ -20,6 +20,11 @@ abstract interface class AuthRemoteDataSource {
     required String elective,
   });
   Future<String> getAllDetails();
+  Future<Map<String, dynamic>> configRoutines({
+    required final String year,
+    required String coreSection,
+    required List<String> electiveSections,
+  });
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -62,10 +67,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<String> getAllDetails() async {
-    print("checking");
     try {
       if (!await CheckAllDetailsAvailable().checkAllDetails()) {
-        print("e");
         final response = await Dio().get(AppSecrets.apiURL);
         final responseData = response.data;
         final Map<String, dynamic> data = jsonDecode(responseData);
@@ -73,12 +76,33 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         StoreDetails().storeDetails(data: jsonString);
         return jsonString;
       } else {
-        print("object");
         return GetAllDetails().getAllDetails();
       }
     } catch (e) {
-      print(e);
       throw const ServerException("An Error Occured");
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> configRoutines({
+    required final String year,
+    required String coreSection,
+    required List<String> electiveSections,
+  }) async {
+    try {
+      String electiveSection = "";
+      if (electiveSections.isNotEmpty) {
+        electiveSection = electiveSections.join(",");
+      }
+      final apiUrl = year == "second"
+          ? "${AppSecrets.secondYearUrl}${coreSection}&electiveSections=${electiveSection}"
+          : "${AppSecrets.thirdYearUrl}${coreSection}&electiveSections=${electiveSection}";
+
+      final res = await Dio().get(apiUrl);
+      final Map<String, dynamic> data = res.data;
+      return data;
+    } catch (e) {
+      throw const ServerException("Cannot Connect to the server");
     }
   }
 }

@@ -70,3 +70,9 @@ final class AuthElectiveSectionDetailsState extends AuthState {
 
   AuthElectiveSectionDetailsState({required this.electiveList});
 }
+
+final class AuthConfigRoutinesState extends AuthState {
+  final Map<String, dynamic> routineDetails;
+
+  AuthConfigRoutinesState({required this.routineDetails});
+}

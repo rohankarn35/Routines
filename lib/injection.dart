@@ -1,9 +1,11 @@
 import 'package:get_it/get_it.dart';
+import 'package:routines/core/cubits/appUser/app_user_cubit.dart';
 import 'package:routines/features/auth/data/datasource/auth_remote_data_source.dart';
 import 'package:routines/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:routines/features/auth/domain/repository/auth_repository.dart';
 import 'package:routines/features/auth/domain/usecases/allDetails.dart';
 import 'package:routines/features/auth/domain/usecases/branchDetails_usecase.dart';
+import 'package:routines/features/auth/domain/usecases/configRoutines.dart';
 import 'package:routines/features/auth/domain/usecases/getElectiveSubjects_Usecase.dart';
 import 'package:routines/features/auth/presentation/bloc/auth_bloc.dart';
 
@@ -35,12 +37,19 @@ void _initAuth() {
     () => GetelectivesubjectsUsecase(serviceLocator()),
   );
 
+  serviceLocator.registerLazySingleton(() => AppUserCubit());
+  serviceLocator.registerLazySingleton(
+    () => Configroutines(serviceLocator()),
+  );
+
   // Registering Bloc
   serviceLocator.registerFactory(
     () => AuthBloc(
       allDetails: serviceLocator(),
       branchDetails: serviceLocator(),
       getelectivesubjectsUsecase: serviceLocator(),
+      appUserCubit: serviceLocator(),
+      configroutines: serviceLocator(),
     ),
   );
 }

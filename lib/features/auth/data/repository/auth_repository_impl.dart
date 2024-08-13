@@ -46,4 +46,21 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(Failure(e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> configRoutines({
+    required final String year,
+    required String coreSection,
+    required List<String> electiveSections,
+  }) async {
+    try {
+      final configRoutines = await authRemoteDataSource.configRoutines(
+          coreSection: coreSection,
+          electiveSections: electiveSections,
+          year: year);
+      return Right(configRoutines);
+    } on ServerException catch (e) {
+      return Left(Failure(e.message));
+    }
+  }
 }

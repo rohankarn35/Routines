@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:routines/core/cubits/appUser/app_user_cubit.dart';
 import 'package:routines/features/auth/domain/usecases/allDetails.dart';
 import 'package:routines/features/auth/domain/usecases/branchDetails_usecase.dart';
+import 'package:routines/features/auth/domain/usecases/configRoutines.dart';
 import 'package:routines/features/auth/domain/usecases/getElectiveSubjects_Usecase.dart';
 
 part 'auth_event.dart';
@@ -11,13 +13,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AllDetails _allDetails;
   final BranchDetails _branchDetails;
   final GetelectivesubjectsUsecase _getelectivesubjectsUsecase;
+  final AppUserCubit _appUserCubit;
+  final Configroutines _configroutines;
   AuthBloc({
     required AllDetails allDetails,
     required BranchDetails branchDetails,
     required GetelectivesubjectsUsecase getelectivesubjectsUsecase,
+    required AppUserCubit appUserCubit,
+    required Configroutines configroutines,
   })  : _allDetails = allDetails,
         _branchDetails = branchDetails,
         _getelectivesubjectsUsecase = getelectivesubjectsUsecase,
+        _appUserCubit = appUserCubit,
+        _configroutines = configroutines,
         super(AuthInitial()) {
     on<AuthSetupButtonClicked>((event, emit) async {
       emit(AuthLoading());
@@ -68,5 +76,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       res.fold((l) => emit(AuthFailure("An error occured, Please try again")),
           (r) => emit(AuthGetElectiveSubjectsState(electiveDetails: r)));
     });
+
+    on<AuthConfigRoutinesEvent>(
+      (event, emit) async {
+        emit(AuthLoading());
+        final res = await _configroutines(ConfigRoutinesParams(
+            year: event.year,
+            coreSection: event.coreSection,
+            electiveSections: event.electiveSections));
+        res.fold((l) => emit(AuthFailure(l.message)),
+            (r) => emit(AuthConfigRoutinesState(routineDetails: r)));
+      },
+    );
   }
 }
