@@ -63,4 +63,23 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(Failure(e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> combineTeacherDetails(
+      {required String year,
+      required String branch,
+      required String coreSection,
+      required List<String> electiveList}) async {
+    try {
+      final combineTeacherDetails =
+          await authRemoteDataSource.combineTeacherDetails(
+              year: year,
+              branch: branch,
+              coreSection: coreSection,
+              electiveList: electiveList);
+      return Right(combineTeacherDetails);
+    } on ServerException catch (e) {
+      return Left(Failure(e.message));
+    }
+  }
 }

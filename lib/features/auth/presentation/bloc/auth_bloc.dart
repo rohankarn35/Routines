@@ -5,6 +5,7 @@ import 'package:routines/features/auth/domain/usecases/allDetails.dart';
 import 'package:routines/features/auth/domain/usecases/branchDetails_usecase.dart';
 import 'package:routines/features/auth/domain/usecases/configRoutines.dart';
 import 'package:routines/features/auth/domain/usecases/getElectiveSubjects_Usecase.dart';
+import 'package:routines/features/auth/domain/usecases/teacherCombineUseCase.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -15,17 +16,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final GetelectivesubjectsUsecase _getelectivesubjectsUsecase;
   final AppUserCubit _appUserCubit;
   final Configroutines _configroutines;
+  final Teachercombineusecase _teachercombineusecase;
   AuthBloc({
     required AllDetails allDetails,
     required BranchDetails branchDetails,
     required GetelectivesubjectsUsecase getelectivesubjectsUsecase,
     required AppUserCubit appUserCubit,
     required Configroutines configroutines,
+    required Teachercombineusecase teachercombineusecase,
   })  : _allDetails = allDetails,
         _branchDetails = branchDetails,
         _getelectivesubjectsUsecase = getelectivesubjectsUsecase,
         _appUserCubit = appUserCubit,
         _configroutines = configroutines,
+        _teachercombineusecase = teachercombineusecase,
         super(AuthInitial()) {
     on<AuthSetupButtonClicked>((event, emit) async {
       emit(AuthLoading());
@@ -80,13 +84,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthConfigRoutinesEvent>(
       (event, emit) async {
         emit(AuthLoading());
-        final res = await _configroutines(ConfigRoutinesParams(
+        final _res = await _configroutines(ConfigRoutinesParams(
             year: event.year,
             coreSection: event.coreSection,
             electiveSections: event.electiveSections));
-        res.fold((l) => emit(AuthFailure(l.message)),
+        _res.fold((l) => emit(AuthFailure(l.message)),
             (r) => emit(AuthConfigRoutinesState(routineDetails: r)));
       },
     );
+    on<AuthTeacherCombineEvent>((event, emit) async {
+      final _res = await _teachercombineusecase(TeacherCombineParams(
+          year: event.year,
+          branch: event.branch,
+          coreSection: event.coreSection,
+          electiveList: event.electiveList));
+
+      _res.fold((l) => emit(AuthFailure(l.message)),
+          (r) => emit(AuthTeacherCombineState(teacherCombinedDetails: r)));
+    });
   }
 }

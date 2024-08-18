@@ -15,13 +15,15 @@ class AppRoutes {
           final Map<String, dynamic> args =
               settings.arguments as Map<String, dynamic>;
           final String year = args["year"];
+          final String branch = args["branch"];
           final String coreSection = args["coreSection"];
-          final List<String> electiveDetails = args["electiveDetails"];
+          final Map<String, dynamic> electiveDetails = args["electiveDetails"];
           return MaterialPageRoute(
               builder: (context) => ConfigPage(
                     year: year,
                     electiveSubjects: electiveDetails,
                     coreSection: coreSection,
+                    branch: branch,
                   ));
         } catch (e) {
           return MaterialPageRoute(

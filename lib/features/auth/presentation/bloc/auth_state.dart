@@ -66,7 +66,7 @@ final class AuthCoreSectionDetailsState extends AuthState {
 }
 
 final class AuthElectiveSectionDetailsState extends AuthState {
-  final List<String> electiveList;
+  final Map<String, dynamic> electiveList;
 
   AuthElectiveSectionDetailsState({required this.electiveList});
 }
@@ -75,4 +75,10 @@ final class AuthConfigRoutinesState extends AuthState {
   final Map<String, dynamic> routineDetails;
 
   AuthConfigRoutinesState({required this.routineDetails});
+}
+
+final class AuthTeacherCombineState extends AuthState {
+  final Map<String, dynamic> teacherCombinedDetails;
+
+  AuthTeacherCombineState({required this.teacherCombinedDetails});
 }

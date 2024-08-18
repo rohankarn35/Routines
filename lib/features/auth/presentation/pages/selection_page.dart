@@ -36,6 +36,7 @@ class _SelectionPageState extends State<SelectionPage> {
             if (state is AuthSucess) {
               dialogBoxButtonText = "Setup Your Routines";
             }
+
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

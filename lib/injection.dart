@@ -7,6 +7,7 @@ import 'package:routines/features/auth/domain/usecases/allDetails.dart';
 import 'package:routines/features/auth/domain/usecases/branchDetails_usecase.dart';
 import 'package:routines/features/auth/domain/usecases/configRoutines.dart';
 import 'package:routines/features/auth/domain/usecases/getElectiveSubjects_Usecase.dart';
+import 'package:routines/features/auth/domain/usecases/teacherCombineUseCase.dart';
 import 'package:routines/features/auth/presentation/bloc/auth_bloc.dart';
 
 final serviceLocator = GetIt.instance;
@@ -41,6 +42,8 @@ void _initAuth() {
   serviceLocator.registerLazySingleton(
     () => Configroutines(serviceLocator()),
   );
+  serviceLocator
+      .registerLazySingleton(() => Teachercombineusecase(serviceLocator()));
 
   // Registering Bloc
   serviceLocator.registerFactory(
@@ -50,6 +53,7 @@ void _initAuth() {
       getelectivesubjectsUsecase: serviceLocator(),
       appUserCubit: serviceLocator(),
       configroutines: serviceLocator(),
+      teachercombineusecase: serviceLocator(),
     ),
   );
 }

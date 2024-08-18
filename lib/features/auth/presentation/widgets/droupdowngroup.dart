@@ -42,6 +42,8 @@ class _DropDownGroupState extends State<DropDownGroup> {
           // num = 0;
           num = state.numbers[1];
           if (num != 0) {
+            electiveDetails = List.filled(num, "");
+
             for (int i = 0; i < num; i++) {
               context.read<AuthBloc>().add(AuthGetElectiveSubjectsEvent(
                   branch: branch, year: year, elective: "elective${i + 1}"));
@@ -70,10 +72,10 @@ class _DropDownGroupState extends State<DropDownGroup> {
                             list: electivelist[e]!.keys.toList(),
                             onChanged: (value) {
                               electiveMap[e] = value;
-                              electiveDetails.add(value);
+                              electiveDetails[sub.indexOf(e)] = value;
                               context.read<AuthBloc>().add(
                                   AuthElectiveSectionDetailsEvent(
-                                      electiveDetails: electiveDetails));
+                                      electiveDetails: electiveMap));
                             },
                             textEditingController: _textEditingController,
                           ),

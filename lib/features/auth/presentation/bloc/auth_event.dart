@@ -57,7 +57,7 @@ final class AuthCoreSectionDetailsEvent extends AuthEvent {
 }
 
 final class AuthElectiveSectionDetailsEvent extends AuthEvent {
-  final List<String> electiveDetails;
+  final Map<String, dynamic> electiveDetails;
 
   AuthElectiveSectionDetailsEvent({required this.electiveDetails});
 }
@@ -71,4 +71,17 @@ final class AuthConfigRoutinesEvent extends AuthEvent {
       {required this.year,
       required this.coreSection,
       required this.electiveSections});
+}
+
+final class AuthTeacherCombineEvent extends AuthEvent {
+  final String year;
+  final String branch;
+  final String coreSection;
+  final List<String> electiveList;
+
+  AuthTeacherCombineEvent(
+      {required this.year,
+      required this.branch,
+      required this.coreSection,
+      required this.electiveList});
 }

@@ -19,9 +19,10 @@ class _CustomDialogContentState extends State<CustomDialogContent> {
   String year = "";
   String branch = "";
   String coreSection = "";
-  List<String> electiveDetails = [];
+  Map<String, dynamic> electiveDetails = {};
   int num = 0;
   bool isActive = false;
+  Map<String, dynamic> teacherDetails = {};
 
   @override
   Widget build(BuildContext context) {
@@ -59,12 +60,16 @@ class _CustomDialogContentState extends State<CustomDialogContent> {
             } else if (state is AuthCoreSectionDetailsState) {
               coreSection = state.coreSection;
             } else if (state is AuthElectiveSectionDetailsState) {
-              if (num == state.electiveList.length) {
-                electiveDetails = state.electiveList;
-              }
+              electiveDetails = state.electiveList;
+              print(state.electiveList);
             }
-            if (coreSection.isNotEmpty && electiveDetails.length == num) {
+            if (coreSection.isNotEmpty &&
+                !electiveDetails.containsValue("") &&
+                electiveDetails.isNotEmpty) {
               isActive = true;
+            }
+            if (state is AuthTeacherCombineState) {
+              teacherDetails = state.teacherCombinedDetails;
             }
           },
           builder: (context, state) {
@@ -119,12 +124,12 @@ class _CustomDialogContentState extends State<CustomDialogContent> {
                         child: CustomSubmitButton(
                           title: "Submit",
                           onTap: () {
-                            Navigator.pushReplacementNamed(context, "/config",
-                                arguments: {
-                                  "year": year,
-                                  "coreSection": coreSection,
-                                  "electiveDetails": electiveDetails
-                                });
+                            Navigator.pushNamed(context, "/config", arguments: {
+                              "year": year,
+                              "coreSection": coreSection,
+                              "electiveDetails": electiveDetails,
+                              "branch": branch,
+                            });
                           },
                         ),
                       )

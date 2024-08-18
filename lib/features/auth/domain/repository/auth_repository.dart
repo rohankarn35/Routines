@@ -16,4 +16,9 @@ abstract interface class AuthRepository {
     required String coreSection,
     required List<String> electiveSections,
   });
+  Future<Either<Failure, Map<String, dynamic>>> combineTeacherDetails(
+      {required String year,
+      required String branch,
+      required String coreSection,
+      required List<String> electiveList});
 }
