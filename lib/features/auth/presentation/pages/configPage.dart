@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:routines/core/cubits/user_entity/scheduleJson.dart';
+import 'package:routines/core/cubits/user_entity/subjectTeacher.dart';
+import 'package:routines/core/hiveUtils/uploadUsertoHIve.dart';
+import 'package:routines/core/utils/scheduleService.dart';
 import 'package:routines/features/auth/presentation/bloc/auth_bloc.dart';
 
 class ConfigPage extends StatefulWidget {
@@ -23,6 +27,9 @@ class _ConfigPageState extends State<ConfigPage>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   List<String> electiveSection = [];
+  Map<String, dynamic> teacherCombinedDetails = {};
+  Map<String, dynamic> scheduleFromDB = {};
+  final ScheduleService _scheduleService = ScheduleService();
 
   void convertElectivetoList() {
     if (widget.electiveSubjects.isNotEmpty) {
@@ -48,11 +55,13 @@ class _ConfigPageState extends State<ConfigPage>
   @override
   void initState() {
     super.initState();
+    convertElectivetoList();
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
     )..repeat();
     _configRoutine();
+    print(electiveSection);
   }
 
   @override
@@ -102,19 +111,25 @@ class _ConfigPageState extends State<ConfigPage>
               listener: (context, state) {
                 if (state is AuthConfigRoutinesState) {
                   _message = "Done";
+                  scheduleFromDB = state.routineDetails;
+                  if (teacherCombinedDetails.isNotEmpty &&
+                      scheduleFromDB.isNotEmpty) {
+                    var scheduleJson =
+                        _scheduleService.fetchSchedule(scheduleFromDB);
+                    var subjectTeacherJson = _scheduleService
+                        .fetchSubjectTeachers(teacherCombinedDetails);
+                    uploadInitialDataToHive(scheduleJson, subjectTeacherJson);
+                  }
                 }
-                if (state is AuthTeacherCombineState) {}
+                if (state is AuthTeacherCombineState) {
+                  teacherCombinedDetails = state.teacherCombinedDetails;
+                }
               },
               builder: (context, state) {
                 return Positioned(
                     bottom: MediaQuery.of(context).size.height / 3,
                     child: Text(_message));
               },
-            ),
-            Positioned(
-              bottom: 40,
-              child:
-                  IconButton(onPressed: () {}, icon: Icon(Icons.bubble_chart)),
             ),
             Container(
               height: MediaQuery.of(context).size.height,

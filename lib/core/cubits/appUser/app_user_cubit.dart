@@ -1,5 +1,5 @@
-import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:routines/core/cubits/user_entity/userEntity.dart';
 
 part 'app_user_state.dart';

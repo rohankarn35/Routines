@@ -130,7 +130,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       print(electiveList);
       if (electiveList.isNotEmpty) {
         for (int i = 0; i < electiveList.length; i++) {
-          String subject = electiveList[i].split('_')[0];
+          String subject = "${electiveList[i].split('_')[0]}(DE)";
           final ElectiveModel electiveModel = ElectiveModel.fromJson(
               json: _data,
               year: year,

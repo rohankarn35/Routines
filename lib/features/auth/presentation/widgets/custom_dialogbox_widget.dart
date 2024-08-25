@@ -65,7 +65,7 @@ class _CustomDialogContentState extends State<CustomDialogContent> {
             }
             if (coreSection.isNotEmpty &&
                 !electiveDetails.containsValue("") &&
-                electiveDetails.isNotEmpty) {
+                electiveDetails.length == num) {
               isActive = true;
             }
             if (state is AuthTeacherCombineState) {
