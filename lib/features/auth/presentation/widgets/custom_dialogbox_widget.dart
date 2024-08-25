@@ -35,6 +35,7 @@ class _CustomDialogContentState extends State<CustomDialogContent> {
             if (state is AuthYearButton) {
               isActive = false;
               coreSection = "";
+              electiveDetails.clear();
               if (state.year == "2nd Year") {
                 year = "second";
               } else if (state.year == "3rd Year") {
@@ -61,7 +62,6 @@ class _CustomDialogContentState extends State<CustomDialogContent> {
               coreSection = state.coreSection;
             } else if (state is AuthElectiveSectionDetailsState) {
               electiveDetails = state.electiveList;
-              print(state.electiveList);
             }
             if (coreSection.isNotEmpty &&
                 !electiveDetails.containsValue("") &&
@@ -124,12 +124,13 @@ class _CustomDialogContentState extends State<CustomDialogContent> {
                         child: CustomSubmitButton(
                           title: "Submit",
                           onTap: () {
-                            Navigator.pushNamed(context, "/config", arguments: {
-                              "year": year,
-                              "coreSection": coreSection,
-                              "electiveDetails": electiveDetails,
-                              "branch": branch,
-                            });
+                            Navigator.pushReplacementNamed(context, "/config",
+                                arguments: {
+                                  "year": year,
+                                  "coreSection": coreSection,
+                                  "electiveDetails": electiveDetails,
+                                  "branch": branch,
+                                });
                           },
                         ),
                       )

@@ -66,7 +66,7 @@ class _SelectionPageState extends State<SelectionPage> {
                       ),
                     ),
                     onPressed: () {
-                      HapticFeedback.mediumImpact();
+                      HapticFeedback.heavyImpact();
                       context.read<AuthBloc>().add(AuthSetupButtonClicked());
                     },
                     child: Text(

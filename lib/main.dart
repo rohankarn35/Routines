@@ -6,6 +6,7 @@ import 'package:routines/core/data/subject.dart';
 import 'package:routines/core/routes.dart';
 import 'package:routines/core/theme/theme.dart';
 import 'package:routines/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:routines/features/main/presentation/bloc/routine_bloc.dart';
 import 'package:routines/injection.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
@@ -33,7 +34,8 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (_) => serviceLocator<AuthBloc>(),
-        )
+        ),
+        BlocProvider(create: (_) => RoutineBloc()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

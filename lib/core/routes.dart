@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:routines/core/error/errorpage.dart';
 import 'package:routines/features/auth/presentation/pages/configPage.dart';
 import 'package:routines/features/auth/presentation/pages/selection_page.dart';
+import 'package:routines/features/main/presentation/pages/mainpage.dart';
 
 class AppRoutes {
   static const String home = '/';
   static const String config = '/config';
+  static const String mainPage = '/mainPage';
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case home:
@@ -31,7 +33,8 @@ class AppRoutes {
                     error: 'An Error Occured',
                   ));
         }
-
+      case mainPage:
+        return MaterialPageRoute(builder: (context) => Mainpage());
       default:
         return MaterialPageRoute(
             builder: (context) => ErrorPage(

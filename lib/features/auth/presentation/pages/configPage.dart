@@ -119,6 +119,11 @@ class _ConfigPageState extends State<ConfigPage>
                     var subjectTeacherJson = _scheduleService
                         .fetchSubjectTeachers(teacherCombinedDetails);
                     uploadInitialDataToHive(scheduleJson, subjectTeacherJson);
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      '/mainPage',
+                      (Route<dynamic> route) => false,
+                    );
                   }
                 }
                 if (state is AuthTeacherCombineState) {
