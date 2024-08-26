@@ -85,3 +85,18 @@ final class AuthTeacherCombineEvent extends AuthEvent {
       required this.coreSection,
       required this.electiveList});
 }
+
+final class AuthSaveUserEvent extends AuthEvent {
+  final String year;
+  final String branch;
+  final String coreSection;
+  final List<String> electiveList;
+
+  AuthSaveUserEvent(
+      {required this.year,
+      required this.branch,
+      required this.coreSection,
+      required this.electiveList});
+}
+
+final class AuthCheckUserEvent extends AuthEvent {}

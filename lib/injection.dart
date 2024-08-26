@@ -5,55 +5,67 @@ import 'package:routines/features/auth/data/repository/auth_repository_impl.dart
 import 'package:routines/features/auth/domain/repository/auth_repository.dart';
 import 'package:routines/features/auth/domain/usecases/allDetails.dart';
 import 'package:routines/features/auth/domain/usecases/branchDetails_usecase.dart';
+import 'package:routines/features/auth/domain/usecases/checkUser.dart';
 import 'package:routines/features/auth/domain/usecases/configRoutines.dart';
 import 'package:routines/features/auth/domain/usecases/getElectiveSubjects_Usecase.dart';
+import 'package:routines/features/auth/domain/usecases/saveUser_usecase.dart';
 import 'package:routines/features/auth/domain/usecases/teacherCombineUseCase.dart';
 import 'package:routines/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:routines/features/main/presentation/bloc/routine_bloc.dart';
 
 final serviceLocator = GetIt.instance;
 
-void initDependencies() {
+Future<void> initDependencies() async {
   _initAuth();
+  _initMain();
+  serviceLocator.registerLazySingleton(() => AppUserCubit());
 }
 
 void _initAuth() {
-  // Registering Data Source
-  serviceLocator.registerLazySingleton<AuthRemoteDataSource>(
-    () => AuthRemoteDataSourceImpl(),
-  );
-
-  // Registering Repository
-  serviceLocator.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(serviceLocator()),
-  );
-
-  // Registering Use Cases
-  serviceLocator.registerLazySingleton(
-    () => AllDetails(serviceLocator()),
-  );
-  serviceLocator.registerLazySingleton(
-    () => BranchDetails(serviceLocator()),
-  );
-  serviceLocator.registerLazySingleton(
-    () => GetelectivesubjectsUsecase(serviceLocator()),
-  );
-
-  serviceLocator.registerLazySingleton(() => AppUserCubit());
-  serviceLocator.registerLazySingleton(
-    () => Configroutines(serviceLocator()),
-  );
   serviceLocator
-      .registerLazySingleton(() => Teachercombineusecase(serviceLocator()));
+    ..registerLazySingleton<AuthRemoteDataSource>(
+      () => AuthRemoteDataSourceImpl(),
+    )
+    ..registerLazySingleton<AuthRepository>(
+      () => AuthRepositoryImpl(serviceLocator()),
+    )
+    // Registering Use Cases
+    ..registerLazySingleton(
+      () => AllDetails(serviceLocator()),
+    )
+    ..registerLazySingleton(
+      () => BranchDetails(serviceLocator()),
+    )
+    ..registerLazySingleton(
+      () => GetelectivesubjectsUsecase(serviceLocator()),
+    )
+    ..registerLazySingleton(
+      () => Configroutines(serviceLocator()),
+    )
+    ..registerLazySingleton(
+      () => Teachercombineusecase(serviceLocator()),
+    )
+    ..registerLazySingleton(
+      () => SaveuserUsecase(serviceLocator()),
+    )
+    ..registerLazySingleton(
+      () => GetCurrentUserUsecase(serviceLocator()),
+    )
+    // Registering Bloc
+    ..registerFactory(
+      () => AuthBloc(
+        allDetails: serviceLocator(),
+        branchDetails: serviceLocator(),
+        getelectivesubjectsUsecase: serviceLocator(),
+        appUserCubit: serviceLocator(),
+        configroutines: serviceLocator(),
+        teachercombineusecase: serviceLocator(),
+        saveuserUsecase: serviceLocator(),
+        getCurrentUserUsecase: serviceLocator(),
+      ),
+    );
+}
 
-  // Registering Bloc
-  serviceLocator.registerFactory(
-    () => AuthBloc(
-      allDetails: serviceLocator(),
-      branchDetails: serviceLocator(),
-      getelectivesubjectsUsecase: serviceLocator(),
-      appUserCubit: serviceLocator(),
-      configroutines: serviceLocator(),
-      teachercombineusecase: serviceLocator(),
-    ),
-  );
+void _initMain() {
+  serviceLocator.registerFactory(() => RoutineBloc());
 }

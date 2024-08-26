@@ -82,3 +82,5 @@ final class AuthTeacherCombineState extends AuthState {
 
   AuthTeacherCombineState({required this.teacherCombinedDetails});
 }
+
+final class AuthUserSuccessState extends AuthState {}

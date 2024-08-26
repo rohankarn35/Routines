@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:routines/features/main/presentation/bloc/routine_bloc.dart';
-import 'package:routines/features/main/presentation/pages/widgets/dailySchedule.dart';
+import 'package:routines/features/main/presentation/pages/widgets/dailytabbar.dart';
+import 'package:routines/features/main/presentation/pages/widgets/mainBottonSheet.dart';
 
 class Mainpage extends StatefulWidget {
   const Mainpage({super.key});
@@ -17,7 +16,9 @@ class _MainpageState extends State<Mainpage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 7, vsync: this);
+    int currentDayIndex = DateTime.now().weekday - 1;
+    _tabController =
+        TabController(length: 7, vsync: this, initialIndex: currentDayIndex);
   }
 
   @override
@@ -39,6 +40,12 @@ class _MainpageState extends State<Mainpage>
             ),
           ),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.menu_rounded, color: Colors.white),
+            onPressed: () => MainBottomSheet.mainshowModalBottomSheet(context),
+          ),
+        ],
         bottom: TabBar(
           dividerHeight: 0,
           physics: BouncingScrollPhysics(),
@@ -74,45 +81,8 @@ class _MainpageState extends State<Mainpage>
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 30),
-        child: TabBarView(controller: _tabController, children: [
-          BlocProvider(
-            create: (context) =>
-                RoutineBloc()..add(LoadDataFromHiveEvent(day: "MON")),
-            child: buildDailySchedule("MON", context),
-          ),
-          BlocProvider(
-            create: (context) =>
-                RoutineBloc()..add(LoadDataFromHiveEvent(day: "TUE")),
-            child: buildDailySchedule("TUE", context),
-          ),
-          BlocProvider(
-            create: (context) =>
-                RoutineBloc()..add(LoadDataFromHiveEvent(day: "WED")),
-            child: buildDailySchedule("WED", context),
-          ),
-          BlocProvider(
-            create: (context) =>
-                RoutineBloc()..add(LoadDataFromHiveEvent(day: "THU")),
-            child: buildDailySchedule("THU", context),
-          ),
-          BlocProvider(
-            create: (context) =>
-                RoutineBloc()..add(LoadDataFromHiveEvent(day: "FRI")),
-            child: buildDailySchedule("FRI", context),
-          ),
-          BlocProvider(
-            create: (context) =>
-                RoutineBloc()..add(LoadDataFromHiveEvent(day: "SAT")),
-            child: buildDailySchedule("SAT", context),
-          ),
-          BlocProvider(
-            create: (context) =>
-                RoutineBloc()..add(LoadDataFromHiveEvent(day: "SUN")),
-            child: buildDailySchedule("SUN", context),
-          ),
-        ]),
+      body: DailyRoutineTabBarView(
+        tabController: _tabController,
       ),
     );
   }

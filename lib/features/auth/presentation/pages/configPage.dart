@@ -124,6 +124,11 @@ class _ConfigPageState extends State<ConfigPage>
                       '/mainPage',
                       (Route<dynamic> route) => false,
                     );
+                    context.read<AuthBloc>().add(AuthSaveUserEvent(
+                        year: widget.year,
+                        branch: widget.branch,
+                        coreSection: widget.coreSection,
+                        electiveList: electiveSection));
                   }
                 }
                 if (state is AuthTeacherCombineState) {

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:routines/core/cubits/user_entity/userEntity.dart';
 import 'package:routines/core/error/exception.dart';
 import 'package:routines/core/secrets/app_secrets.dart';
 import 'package:routines/core/utils/check_alldetails.dart';
@@ -9,6 +10,7 @@ import 'package:routines/core/utils/store_details.dart';
 import 'package:routines/features/auth/data/models/elective_model.dart';
 import 'package:routines/features/auth/data/models/section_model.dart';
 import 'package:routines/features/auth/data/models/teacher_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 abstract interface class AuthRemoteDataSource {
   Future<List<int>> branchDetails({
@@ -27,6 +29,13 @@ abstract interface class AuthRemoteDataSource {
     required List<String> electiveSections,
   });
   Future<Map<String, dynamic>> combineTeacherDetails({
+    required String year,
+    required String branch,
+    required String coreSection,
+    required List<String> electiveList,
+  });
+  Future<Userentity> currentUser();
+  Future<Userentity> saveUser({
     required String year,
     required String branch,
     required String coreSection,
@@ -60,7 +69,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String branch,
     required String elective,
   }) async {
-    print(elective);
     try {
       final String _response = await GetAllDetails().getAllDetails();
       final Map<String, dynamic> _data = jsonDecode(_response);
@@ -69,7 +77,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           json: _data, year: year, branch: branch, elective: elective);
       return electiveModel.electiveSubjects;
     } catch (e) {
-      print(e);
       throw ServerException("Server Error");
     }
   }
@@ -127,7 +134,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final TeacherModel teacherModel =
           TeacherModel.fromJson(_data, year, branch, coreSection);
       Map<String, dynamic> TeacherData = {};
-      print(electiveList);
+
       if (electiveList.isNotEmpty) {
         for (int i = 0; i < electiveList.length; i++) {
           String subject = "${electiveList[i].split('_')[0]}(DE)";
@@ -146,8 +153,53 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       return TeacherData;
     } catch (e) {
-      print(e);
       throw const ServerException("Cannot Fetch Teacher Data");
+    }
+  }
+
+  @override
+  Future<Userentity> currentUser() async {
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      String? year = prefs.getString("year");
+      String? branch = prefs.getString("branch");
+      String? coreSection = prefs.getString("coreSection");
+      List<String>? electiveSections = prefs.getStringList("electiveList");
+
+      final Userentity user = Userentity(
+          year: year,
+          branch: branch,
+          coreSection: coreSection,
+          electiveSections: electiveSections);
+
+      return user;
+    } catch (e) {
+      throw ServerException("Cannot Get User");
+    }
+  }
+
+  @override
+  Future<Userentity> saveUser(
+      {required String year,
+      required String branch,
+      required String coreSection,
+      required List<String> electiveList}) async {
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      prefs.setString("year", year);
+      prefs.setString("branch", branch);
+      prefs.setString("coreSection", coreSection);
+      prefs.setStringList("electiveList", electiveList);
+
+      return Userentity(
+          year: year,
+          branch: branch,
+          coreSection: coreSection,
+          electiveSections: electiveList);
+    } catch (e) {
+      throw const ServerException("Cannot Save User");
     }
   }
 }

@@ -1,8 +1,8 @@
 class Userentity {
-  final String year;
-  final String branch;
-  final String coreSection;
-  final List<String> electiveSections;
+  final String? year;
+  final String? branch;
+  final String? coreSection;
+  final List<String>? electiveSections;
 
   Userentity(
       {required this.year,

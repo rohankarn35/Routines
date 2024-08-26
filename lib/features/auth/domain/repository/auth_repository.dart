@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:routines/core/cubits/user_entity/userEntity.dart';
 import 'package:routines/core/error/failure.dart';
 
 abstract interface class AuthRepository {
@@ -21,4 +23,11 @@ abstract interface class AuthRepository {
       required String branch,
       required String coreSection,
       required List<String> electiveList});
+  Future<Either<Failure, Userentity>> saveUser(
+      {required String year,
+      required String branch,
+      required String coreSection,
+      required List<String> electiveList});
+
+  Future<Either<Failure, Userentity>> currentUser();
 }

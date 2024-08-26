@@ -1,4 +1,5 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:routines/core/cubits/user_entity/userEntity.dart';
 import 'package:routines/core/error/exception.dart';
 import 'package:routines/core/error/failure.dart';
 import 'package:routines/features/auth/data/datasource/auth_remote_data_source.dart';
@@ -78,6 +79,34 @@ class AuthRepositoryImpl implements AuthRepository {
               coreSection: coreSection,
               electiveList: electiveList);
       return Right(combineTeacherDetails);
+    } on ServerException catch (e) {
+      return Left(Failure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Userentity>> saveUser(
+      {required String year,
+      required String branch,
+      required String coreSection,
+      required List<String> electiveList}) async {
+    try {
+      final _saveUser = await authRemoteDataSource.saveUser(
+          year: year,
+          branch: branch,
+          coreSection: coreSection,
+          electiveList: electiveList);
+      return Right(_saveUser);
+    } on ServerException catch (e) {
+      return Left(Failure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Userentity>> currentUser() async {
+    try {
+      final _currentUser = await authRemoteDataSource.currentUser();
+      return Right(_currentUser);
     } on ServerException catch (e) {
       return Left(Failure(e.message));
     }
