@@ -29,5 +29,5 @@ abstract interface class AuthRepository {
       required String coreSection,
       required List<String> electiveList});
 
-  Future<Either<Failure, Userentity>> currentUser();
+  Future<Either<Failure, Userentity?>> currentUser();
 }

@@ -84,3 +84,5 @@ final class AuthTeacherCombineState extends AuthState {
 }
 
 final class AuthUserSuccessState extends AuthState {}
+
+final class AuthUserLoadingState extends AuthState {}

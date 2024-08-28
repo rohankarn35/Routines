@@ -103,7 +103,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, Userentity>> currentUser() async {
+  Future<Either<Failure, Userentity?>> currentUser() async {
     try {
       final _currentUser = await authRemoteDataSource.currentUser();
       return Right(_currentUser);

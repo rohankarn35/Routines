@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:hive/hive.dart';
 import 'package:routines/core/cubits/user_entity/userEntity.dart';
 import 'package:routines/core/error/exception.dart';
 import 'package:routines/core/secrets/app_secrets.dart';
 import 'package:routines/core/utils/check_alldetails.dart';
 import 'package:routines/core/utils/get_alldetails.dart';
 import 'package:routines/core/utils/store_details.dart';
+import 'package:routines/features/auth/data/models/HiveModel/UserEntityModel.dart';
 import 'package:routines/features/auth/data/models/elective_model.dart';
 import 'package:routines/features/auth/data/models/section_model.dart';
 import 'package:routines/features/auth/data/models/teacher_model.dart';
@@ -34,7 +36,7 @@ abstract interface class AuthRemoteDataSource {
     required String coreSection,
     required List<String> electiveList,
   });
-  Future<Userentity> currentUser();
+  Future<Userentity?> currentUser();
   Future<Userentity> saveUser({
     required String year,
     required String branch,
@@ -158,23 +160,22 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<Userentity> currentUser() async {
+  Future<Userentity?> currentUser() async {
     try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      // final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final box = Hive.box<Userentitymodel>('user');
 
-      String? year = prefs.getString("year");
-      String? branch = prefs.getString("branch");
-      String? coreSection = prefs.getString("coreSection");
-      List<String>? electiveSections = prefs.getStringList("electiveList");
+      final user = box.get("user");
 
-      final Userentity user = Userentity(
-          year: year,
-          branch: branch,
-          coreSection: coreSection,
-          electiveSections: electiveSections);
+      final Userentity? userentity = Userentity(
+          year: user?.year,
+          branch: user?.branch,
+          coreSection: user?.coreSection,
+          electiveSections: user?.electiveSections);
 
-      return user;
+      return userentity;
     } catch (e) {
+      print(e);
       throw ServerException("Cannot Get User");
     }
   }
@@ -186,19 +187,24 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       required String coreSection,
       required List<String> electiveList}) async {
     try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final box = Hive.box<Userentitymodel>('user');
 
-      prefs.setString("year", year);
-      prefs.setString("branch", branch);
-      prefs.setString("coreSection", coreSection);
-      prefs.setStringList("electiveList", electiveList);
-
-      return Userentity(
+      final Userentity user = Userentity(
           year: year,
           branch: branch,
           coreSection: coreSection,
           electiveSections: electiveList);
+
+      final Userentitymodel userentitymodel = Userentitymodel(
+          year: year,
+          branch: branch,
+          coreSection: coreSection,
+          electiveSections: electiveList);
+      box.put("user", userentitymodel);
+
+      return user;
     } catch (e) {
+      print(e);
       throw const ServerException("Cannot Save User");
     }
   }

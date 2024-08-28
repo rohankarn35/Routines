@@ -29,7 +29,6 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
         }
 
         if (subject.isNotEmpty) {
-          print(subjectTeacher);
           emit(RoutineLoadFromHiveState(
             List<String>.from(subject),
             List<String>.from(time),

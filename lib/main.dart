@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:routines/core/cubits/appUser/app_user_cubit.dart';
+import 'package:routines/core/cubits/user_entity/userEntity.dart';
 import 'package:routines/core/data/daySchedule.dart';
 import 'package:routines/core/data/subject.dart';
 import 'package:routines/core/routes.dart';
 import 'package:routines/core/theme/theme.dart';
+import 'package:routines/features/auth/data/models/HiveModel/UserEntityModel.dart';
 import 'package:routines/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:routines/features/auth/presentation/pages/selection_page.dart';
 import 'package:routines/features/main/presentation/bloc/routine_bloc.dart';
@@ -16,12 +18,16 @@ import 'package:path_provider/path_provider.dart' as path_provider;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Hive
   final appDocumentDir = await path_provider.getApplicationDocumentsDirectory();
   await Hive.initFlutter(appDocumentDir.path);
+
   Hive.registerAdapter(SubjectAdapter());
   Hive.registerAdapter(DayScheduleAdapter());
+  Hive.registerAdapter(UserentitymodelAdapter());
+
+// Open Hive boxes
   await Hive.openBox<DaySchedule>('timetable');
+  await Hive.openBox<Userentitymodel>('user');
 
   // Initialize dependencies
   initDependencies();
@@ -70,7 +76,6 @@ class _MyAppState extends State<MyApp> {
           return state is AppUserLoggedIn;
         },
         builder: (context, isUserLoggin) {
-          print(isUserLoggin);
           if (isUserLoggin) {
             return Mainpage();
           } else {

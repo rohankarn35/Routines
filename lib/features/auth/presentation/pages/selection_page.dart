@@ -36,6 +36,13 @@ class _SelectionPageState extends State<SelectionPage> {
             if (state is AuthSucess) {
               dialogBoxButtonText = "Setup Your Routines";
             }
+            if (state is AuthUserLoadingState) {
+              return Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            }
 
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,

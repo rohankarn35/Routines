@@ -165,6 +165,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _oncheckUser(
       AuthCheckUserEvent event, Emitter<AuthState> emit) async {
+    emit(AuthUserLoadingState());
     final _res = await _getCurrentUserUsecase(NoUserParams());
 
     _res.fold(
@@ -172,7 +173,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _emitUserSuccess(
-    Userentity user,
+    Userentity? user,
     Emitter<AuthState> emit,
   ) {
     _appUserCubit.updateUser(user);
