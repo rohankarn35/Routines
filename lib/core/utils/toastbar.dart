@@ -9,6 +9,5 @@ void showToast(String message, Color colors) {
     backgroundColor: colors,
     textColor: Colors.white,
     fontSize: 16.0,
-    
   );
 }

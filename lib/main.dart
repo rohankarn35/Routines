@@ -1,8 +1,10 @@
+import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
+import 'package:flutter_system_ringtones/flutter_system_ringtones.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:routines/core/cubits/appUser/app_user_cubit.dart';
-import 'package:routines/core/cubits/user_entity/userEntity.dart';
 import 'package:routines/core/data/daySchedule.dart';
 import 'package:routines/core/data/subject.dart';
 import 'package:routines/core/routes.dart';
@@ -11,9 +13,13 @@ import 'package:routines/features/auth/data/models/HiveModel/UserEntityModel.dar
 import 'package:routines/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:routines/features/auth/presentation/pages/selection_page.dart';
 import 'package:routines/features/main/presentation/bloc/routine_bloc.dart';
+import 'package:routines/features/main/presentation/pages/mainAlarmPage.dart';
 import 'package:routines/features/main/presentation/pages/mainpage.dart';
+import 'package:routines/features/main/presentation/pages/notification.dart';
 import 'package:routines/injection.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,12 +31,14 @@ void main() async {
   Hive.registerAdapter(DayScheduleAdapter());
   Hive.registerAdapter(UserentitymodelAdapter());
 
-// Open Hive boxes
   await Hive.openBox<DaySchedule>('timetable');
   await Hive.openBox<Userentitymodel>('user');
+  tz.initializeTimeZones();
 
-  // Initialize dependencies
+  // print(await FlutterSystemRingtones.getAlarmSounds());
+
   initDependencies();
+  await Alarm.init();
 
   runApp(MultiBlocProvider(
     providers: [
@@ -83,6 +91,7 @@ class _MyAppState extends State<MyApp> {
           }
         },
       ),
+      // home: NotificationPage(),
     );
   }
 }

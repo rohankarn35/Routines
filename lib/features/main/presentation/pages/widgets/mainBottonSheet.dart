@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:routines/features/main/presentation/pages/widgets/customListtile.dart';
 
 class MainBottomSheet {
   static void mainshowModalBottomSheet(BuildContext context) {
@@ -14,31 +15,26 @@ class MainBottomSheet {
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ListTile(
-              leading: const Icon(Icons.menu, color: Colors.white),
-              title: const Text('Menu', style: TextStyle(color: Colors.white)),
-              onTap: () {
-                // Handle Menu tap
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.info, color: Colors.white),
-              title: const Text('About', style: TextStyle(color: Colors.white)),
-              onTap: () {
-                // Handle About tap
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.logout, color: Colors.white),
-              title:
-                  const Text('Logout', style: TextStyle(color: Colors.white)),
-              onTap: () {
-                // Handle Logout tap
-                Navigator.pop(context);
-              },
-            ),
+            CustomListTile.customListTile(
+                Icons.notifications, "Turn on Notification", () {},
+                trailing: Switch(
+                    activeColor: Colors.green.shade600,
+                    value: false,
+                    onChanged: (bool val) {
+                      val = !val;
+                    })),
+            CustomListTile.customListTile(Icons.alarm, "Wake me up", () {},
+                trailing: Switch(
+                    activeColor: Colors.green.shade600,
+                    value: false,
+                    onChanged: (bool val) {
+                      val = !val;
+                    })),
+            CustomListTile.customListTile(Icons.add, "Add Routines", () {}),
+            CustomListTile.customListTile(Icons.sync, "Sync Routines", () {}),
+            CustomListTile.customListTile(Icons.edit, "Edit Section", () {}),
+            CustomListTile.customListTile(Icons.info, "About", () {}),
+            CustomListTile.customListTile(Icons.logout, "Logout", () {}),
           ],
         );
       },

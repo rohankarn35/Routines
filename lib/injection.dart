@@ -1,3 +1,5 @@
+import 'package:alarm/alarm.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:get_it/get_it.dart';
 import 'package:routines/core/cubits/appUser/app_user_cubit.dart';
 import 'package:routines/features/auth/data/datasource/auth_remote_data_source.dart';
@@ -18,6 +20,7 @@ final serviceLocator = GetIt.instance;
 Future<void> initDependencies() async {
   _initAuth();
   _initMain();
+
   serviceLocator.registerLazySingleton(() => AppUserCubit());
 }
 

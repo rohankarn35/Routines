@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:hive/hive.dart';
 import 'package:routines/core/cubits/user_entity/userEntity.dart';
@@ -12,7 +11,6 @@ import 'package:routines/features/auth/data/models/HiveModel/UserEntityModel.dar
 import 'package:routines/features/auth/data/models/elective_model.dart';
 import 'package:routines/features/auth/data/models/section_model.dart';
 import 'package:routines/features/auth/data/models/teacher_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 abstract interface class AuthRemoteDataSource {
   Future<List<int>> branchDetails({
@@ -79,7 +77,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           json: _data, year: year, branch: branch, elective: elective);
       return electiveModel.electiveSubjects;
     } catch (e) {
-      throw ServerException("Server Error");
+      throw const ServerException("Server Error");
     }
   }
 
@@ -175,8 +173,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       return userentity;
     } catch (e) {
-      print(e);
-      throw ServerException("Cannot Get User");
+      throw const ServerException("Cannot Get User");
     }
   }
 
@@ -204,7 +201,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       return user;
     } catch (e) {
-      print(e);
       throw const ServerException("Cannot Save User");
     }
   }

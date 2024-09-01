@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:routines/core/cubits/user_entity/scheduleJson.dart';
-import 'package:routines/core/cubits/user_entity/subjectTeacher.dart';
 import 'package:routines/core/hiveUtils/uploadUsertoHIve.dart';
 import 'package:routines/core/utils/scheduleService.dart';
 import 'package:routines/features/auth/presentation/bloc/auth_bloc.dart';

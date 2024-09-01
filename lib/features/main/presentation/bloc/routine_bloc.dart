@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 import 'package:routines/core/hiveUtils/boxes.dart';
 import 'package:routines/core/utils/toastbar.dart';
@@ -8,6 +11,7 @@ part 'routine_event.dart';
 part 'routine_state.dart';
 
 class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
+  Timer? _timer;
   RoutineBloc() : super(RoutineInitial()) {
     on<LoadDataFromHiveEvent>((event, emit) {
       try {

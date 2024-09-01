@@ -20,3 +20,9 @@ final class RoutineLoadFromHiveState extends RoutineState {
 }
 
 final class RoutineNoClassState extends RoutineState {}
+
+final class RoutineAlarmClockState extends RoutineState {
+  final String timeStamp;
+
+  RoutineAlarmClockState({required this.timeStamp});
+}

@@ -8,3 +8,5 @@ final class LoadDataFromHiveEvent extends RoutineEvent {
 
   LoadDataFromHiveEvent({required this.day});
 }
+
+final class RoutineAlarmTimeClockEvent extends RoutineEvent {}
