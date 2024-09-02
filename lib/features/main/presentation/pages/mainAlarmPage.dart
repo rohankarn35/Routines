@@ -1,8 +1,8 @@
-import 'dart:async';
+import 'dart:io';
+
 import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
-import 'package:intl/intl.dart';
 import 'package:routines/features/main/presentation/pages/widgets/clockWidget.dart';
 import 'package:routines/features/main/presentation/pages/widgets/shakingAlarmIcon.dart';
 import 'package:slide_to_act/slide_to_act.dart';
@@ -19,7 +19,8 @@ class _MainAlarmPageState extends State<MainAlarmPage> {
   @override
   void initState() {
     super.initState();
-    FlutterRingtonePlayer().playAlarm();
+    WidgetsFlutterBinding.ensureInitialized();
+    // FlutterRingtonePlayer().playAlarm();
   }
 
   @override
@@ -54,9 +55,10 @@ class _MainAlarmPageState extends State<MainAlarmPage> {
                 // textStyle: TextStyle(),
                 outerColor: const Color.fromARGB(255, 97, 13, 7),
                 onSubmit: () async {
-                  Navigator.pop(context);
+                  // Navigator.pop(context);
                   await Alarm.stop(widget.id);
-                  FlutterRingtonePlayer().stop();
+                  // FlutterRingtonePlayer().stop();
+                  exit(0);
                 },
               ),
             )

@@ -1,9 +1,7 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:meta/meta.dart';
+import 'package:routines/core/data/subject.dart';
+
 import 'package:routines/core/hiveUtils/boxes.dart';
 import 'package:routines/core/utils/toastbar.dart';
 
@@ -11,34 +9,22 @@ part 'routine_event.dart';
 part 'routine_state.dart';
 
 class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
-  Timer? _timer;
   RoutineBloc() : super(RoutineInitial()) {
     on<LoadDataFromHiveEvent>((event, emit) {
       try {
         final box = Boxes.getData();
-        List<String> subject = [];
-        List<String> time = [];
-        List<String> subjectTeacher = [];
-        List<String> roomNo = [];
+        List<Subject> subject = [];
 
         final data = box.get(event.day);
 
         if (data != null && data.subjects.isNotEmpty) {
           for (var sub in data.subjects) {
-            subject.add(sub.subject);
-            time.add(sub.time);
-            subjectTeacher.add(sub.subjectTeacher);
-            roomNo.add(sub.roomNo);
+            subject.add(sub);
           }
         }
 
         if (subject.isNotEmpty) {
-          emit(RoutineLoadFromHiveState(
-            List<String>.from(subject),
-            List<String>.from(time),
-            List<String>.from(subjectTeacher),
-            List<String>.from(roomNo),
-          ));
+          emit(RoutineLoadFromHiveState(List<Subject>.from(subject)));
         } else {
           emit(RoutineNoClassState());
         }

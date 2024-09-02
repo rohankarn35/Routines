@@ -10,12 +10,7 @@ Widget buildDailySchedule(String day, BuildContext context) {
         return ListView.builder(
           itemCount: state.subject.length,
           itemBuilder: (context, index) {
-            return RoutineCard(
-              subject: state.subject[index],
-              roomNo: state.roomNo[index],
-              time: state.time[index],
-              subjectTeacher: state.subjectTeacher[index],
-            );
+            return RoutineCard(subject: state.subject[index]);
           },
         );
       } else if (state is RoutineInitial) {

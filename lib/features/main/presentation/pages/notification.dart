@@ -3,9 +3,7 @@ import 'dart:io';
 
 import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
-import 'package:flutter_system_ringtones/flutter_system_ringtones.dart';
+
 import 'package:permission_handler/permission_handler.dart';
 import 'package:routines/features/main/presentation/pages/mainAlarmPage.dart';
 
@@ -27,12 +25,8 @@ class _NotificationPageState extends State<NotificationPage> {
 
   Future<void> checkAndroidScheduleExactAlarmPermission() async {
     final status = await Permission.scheduleExactAlarm.status;
-    print('Schedule exact alarm permission: $status.');
     if (status.isDenied) {
-      print('Requesting schedule exact alarm permission...');
       final res = await Permission.scheduleExactAlarm.request();
-      print(
-          'Schedule exact alarm permission ${res.isGranted ? '' : 'not'} granted.');
     }
   }
 
@@ -40,9 +34,7 @@ class _NotificationPageState extends State<NotificationPage> {
     PermissionStatus status = await Permission.audio.request();
 
     if (status.isGranted) {
-      print("Audio permission granted.");
     } else if (status.isDenied) {
-      print("Audio permission denied.");
     } else if (status.isPermanentlyDenied) {
       openAppSettings();
     }
@@ -73,16 +65,25 @@ class _NotificationPageState extends State<NotificationPage> {
   }
 
   Future<void> setAlarmWithMusic(String musicPath) async {
+    DateTime dateTime = DateTime(
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+      9, // hour
+      0, // minute
+      0, // second
+    );
+
     final alarmSettings = AlarmSettings(
         id: 42,
-        dateTime: DateTime.now().add(Duration(seconds: 5)),
+        dateTime: DateTime.now().add(Duration(seconds: 8)),
         assetAudioPath: musicPath,
         loopAudio: true,
         vibrate: true,
         // volume: 0.8,
         fadeDuration: 3.0,
-        notificationTitle: 'This is the title',
-        notificationBody: 'This is the body',
+        notificationTitle: 'This is the test alarm',
+        notificationBody: 'Click here to off the alarm',
         androidFullScreenIntent: true);
     await Alarm.set(
       alarmSettings: alarmSettings,
@@ -145,19 +146,19 @@ class _NotificationPageState extends State<NotificationPage> {
             },
             child: Text('Set Alarm'),
           ),
-          ElevatedButton(
-            onPressed: () async {
-              // await AndroidAlarmManager.oneShot(
-              //   const Duration(seconds: 5),
-              //   0,
-              //   printHello,
-              // );
-              await requestStoragePermission();
-              stopAlarm(42);
-              FlutterRingtonePlayer().stop();
-            },
-            child: Text('cancel alarm'),
-          ),
+          // ElevatedButton(
+          //   onPressed: () async {
+          //     // await AndroidAlarmManager.oneShot(
+          //     //   const Duration(seconds: 5),
+          //     //   0,
+          //     //   printHello,
+          //     // );
+          //     await requestStoragePermission();
+          //     stopAlarm(42);
+          //     FlutterRingtonePlayer().stop();
+          //   },
+          //   child: Text('cancel alarm'),
+          // ),
         ],
       )),
     );

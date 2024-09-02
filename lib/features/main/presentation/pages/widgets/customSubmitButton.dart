@@ -17,8 +17,8 @@ class CustomSubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 40,
-      width: 120,
+      height: 55,
+      width: 150,
       child: ElevatedButton(
         onPressed: onTap,
         style: ElevatedButton.styleFrom(
@@ -26,7 +26,7 @@ class CustomSubmitButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20), // Adjust radius as needed
           ),
-          // padding: EdgeInsets.symmetric(horizontal: 32),
+          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 32),
           textStyle: TextStyle(
             color: Colors.red,
             fontWeight: FontWeight.w600,

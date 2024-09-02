@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:routines/core/data/subject.dart';
 
 class RoutineCard extends StatelessWidget {
-  final String subject;
-  final String roomNo;
-  final String time;
-  final String subjectTeacher;
+  final Subject subject;
 
   const RoutineCard({
     super.key,
     required this.subject,
-    required this.roomNo,
-    required this.time,
-    required this.subjectTeacher,
   });
 
   @override
@@ -34,7 +29,7 @@ class RoutineCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      subject,
+                      subject.subject,
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -43,17 +38,19 @@ class RoutineCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      subjectTeacher,
+                      subject.subjectTeacher.length < 20
+                          ? subject.subjectTeacher
+                          : '${subject.subjectTeacher.substring(0, 21)}...',
                       style: const TextStyle(
                         color: Colors.white38,
                       ),
-                      overflow: TextOverflow.ellipsis,
+                      overflow: TextOverflow.clip,
                       maxLines: 1,
                       softWrap: false,
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      roomNo,
+                      subject.roomNo,
                       style: const TextStyle(
                         color: Colors.white60,
                         fontWeight: FontWeight.bold,
@@ -65,12 +62,12 @@ class RoutineCard extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(right: 20),
                     child: Text(
-                      time,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+                      subject.time,
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color:
+                              subject.isUserAdded ? Colors.red : Colors.white),
                     ),
                   ),
                 ),
