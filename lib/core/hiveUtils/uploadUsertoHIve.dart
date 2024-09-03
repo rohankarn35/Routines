@@ -1,3 +1,4 @@
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:routines/core/cubits/user_entity/scheduleJson.dart';
 import 'package:routines/core/cubits/user_entity/subjectTeacher.dart';
 import 'package:routines/core/data/daySchedule.dart';
