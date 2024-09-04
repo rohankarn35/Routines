@@ -6,7 +6,7 @@ import 'package:routines/features/main/presentation/pages/widgets/routineCard.da
 Widget buildDailySchedule(String day, BuildContext context) {
   return BlocBuilder<RoutineBloc, RoutineState>(
     builder: (context, state) {
-      if (state is RoutineLoadFromHiveState && state.subject.isNotEmpty) {
+      if (state is RoutineLoadFromHiveState) {
         return ListView.builder(
           itemCount: state.subject.length,
           itemBuilder: (context, index) {

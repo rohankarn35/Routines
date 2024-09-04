@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:routines/features/main/presentation/bloc/routine_bloc.dart';
 import 'package:routines/features/main/presentation/pages/widgets/dailySchedule.dart';
+import 'package:routines/injection.dart';
 
 class DailyRoutineTabBarView extends StatelessWidget {
   final TabController tabController;
@@ -19,8 +20,8 @@ class DailyRoutineTabBarView extends StatelessWidget {
         controller: tabController,
         children: days.map((day) {
           return BlocProvider(
-            create: (context) =>
-                RoutineBloc()..add(LoadDataFromHiveEvent(day: day)),
+            create: (context) => serviceLocator<RoutineBloc>()
+              ..add(LoadDataFromHiveEvent(day: day)),
             child: buildDailySchedule(day, context),
           );
         }).toList(),

@@ -14,3 +14,15 @@ final class RoutineLoadFromHiveState extends RoutineState {
 }
 
 final class RoutineNoClassState extends RoutineState {}
+
+final class RoutineFailure extends RoutineState {
+  final String message;
+
+  RoutineFailure(this.message);
+}
+
+final class RoutineChangeDropDownValueState extends RoutineState {
+  final String? day;
+
+  RoutineChangeDropDownValueState({required this.day});
+}

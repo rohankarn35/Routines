@@ -8,3 +8,9 @@ final class LoadDataFromHiveEvent extends RoutineEvent {
 
   LoadDataFromHiveEvent({required this.day});
 }
+
+final class RoutineChangeDropDownValueEvent extends RoutineEvent {
+  final String? day;
+
+  RoutineChangeDropDownValueEvent({required this.day});
+}

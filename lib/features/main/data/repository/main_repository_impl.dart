@@ -26,6 +26,7 @@ class MainRepositoryImpl implements MainRepository {
   Either<Failure, List<Subject>> getDataFromHive({required String day}) {
     try {
       final _data = mainLocalDataSource.getDataFromHive(day: day);
+
       return Right(_data);
     } on HiveDataException catch (e) {
       return Left(Failure(e.message));

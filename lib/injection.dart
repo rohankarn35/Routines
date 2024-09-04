@@ -13,6 +13,14 @@ import 'package:routines/features/auth/domain/usecases/getElectiveSubjects_Useca
 import 'package:routines/features/auth/domain/usecases/saveUser_usecase.dart';
 import 'package:routines/features/auth/domain/usecases/teacherCombineUseCase.dart';
 import 'package:routines/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:routines/features/main/data/datasource/main_local_data_source.dart';
+import 'package:routines/features/main/data/datasource/main_remote_data_source.dart';
+import 'package:routines/features/main/data/repository/main_repository_impl.dart';
+import 'package:routines/features/main/domain/repository/main_repository.dart';
+import 'package:routines/features/main/domain/usecases/delete_from_hive.dart';
+import 'package:routines/features/main/domain/usecases/get_from_hive.dart';
+import 'package:routines/features/main/domain/usecases/update_hive_data.dart';
+import 'package:routines/features/main/domain/usecases/upload_to_hive.dart';
 import 'package:routines/features/main/presentation/bloc/routine_bloc.dart';
 
 final serviceLocator = GetIt.instance;
@@ -70,5 +78,18 @@ void _initAuth() {
 }
 
 void _initMain() {
-  serviceLocator.registerFactory(() => RoutineBloc());
+  serviceLocator.registerLazySingleton<MainLocalDataSource>(
+      () => MainLocalDataSourceImpl());
+  serviceLocator.registerLazySingleton<MainRepository>(
+      () => MainRepositoryImpl(serviceLocator()));
+  serviceLocator.registerLazySingleton(() => UpdateHiveData(serviceLocator()));
+  serviceLocator.registerLazySingleton(() => UploadToHive(serviceLocator()));
+
+  serviceLocator.registerLazySingleton(() => GetFromHive(serviceLocator()));
+  serviceLocator.registerLazySingleton(() => DeleteFromHive(serviceLocator()));
+  serviceLocator.registerFactory(() => RoutineBloc(
+        updateHiveData: serviceLocator(),
+        uploadToHive: serviceLocator(),
+        getFromHive: serviceLocator(),
+      ));
 }

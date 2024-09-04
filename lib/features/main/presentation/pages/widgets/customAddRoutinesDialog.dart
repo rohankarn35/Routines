@@ -3,7 +3,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:routines/core/data/subject.dart';
 import 'package:routines/features/auth/presentation/widgets/customSubmitButton.dart';
-import 'package:routines/features/main/presentation/pages/testUploadHIve.dart';
+import 'package:routines/features/main/presentation/pages/widgets/customDropDown.dart';
 import 'package:routines/features/main/presentation/pages/widgets/customTextfield.dart';
 import 'package:routines/features/main/presentation/pages/widgets/CustomTimePicker.dart';
 import 'package:routines/features/main/presentation/pages/widgets/routineTimeWidget.dart';
@@ -36,92 +36,7 @@ class _CustomAddRoutinesDialogState extends State<CustomAddRoutinesDialog> {
             const SizedBox(
               height: 20,
             ),
-
-            DropdownButtonHideUnderline(
-              child: DropdownButton2<String>(
-                isExpanded: true,
-                hint: const Text(
-                  'Select Weekday',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                items: [
-                  'Monday',
-                  'Tuesday',
-                  'Wednesday',
-                  'Thursday',
-                  'Friday',
-                  'Saturday',
-                  'Sunday'
-                ]
-                    .map((String day) => DropdownMenuItem<String>(
-                          value: day,
-                          child: Text(
-                            day,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ))
-                    .toList(),
-                value: selectedDay,
-                onChanged: (value) {
-                  setState(() {
-                    selectedDay = value;
-                  });
-                },
-                buttonStyleData: ButtonStyleData(
-                  height: 50,
-                  width: double.infinity,
-                  padding: const EdgeInsets.only(left: 14, right: 14),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(
-                      color: Colors.transparent,
-                    ),
-                    color: Colors.grey.withOpacity(0.2),
-                  ),
-                  elevation: 2,
-                ),
-                iconStyleData: const IconStyleData(
-                  icon: Icon(
-                    Icons.arrow_forward_ios_outlined,
-                  ),
-                  iconSize: 14,
-                  iconEnabledColor: Colors.white,
-                  iconDisabledColor: Colors.grey,
-                ),
-                dropdownStyleData: DropdownStyleData(
-                  maxHeight: 250,
-                  width: 250,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(14),
-                    color: Colors.black,
-                  ),
-                  offset: const Offset(-10, -7),
-                  scrollbarTheme: ScrollbarThemeData(
-                    radius: const Radius.circular(40),
-                    thickness: MaterialStateProperty.all(6),
-                    thumbVisibility: MaterialStateProperty.all(true),
-                  ),
-                ),
-                menuItemStyleData: const MenuItemStyleData(
-                  height: 40,
-                  padding: EdgeInsets.only(left: 14, right: 14),
-                ),
-                onMenuStateChange: (isOpen) {
-                  if (!isOpen) {
-                    daytextController.clear();
-                  }
-                },
-              ),
-            ),
+            CustomDropDown(),
             const SizedBox(height: 16),
 
             // Text Box
@@ -162,18 +77,11 @@ class _CustomAddRoutinesDialogState extends State<CustomAddRoutinesDialog> {
             ),
 
             Center(
-                child: CustomSubmitButton(
-                    title: "Submit",
-                    onTap: () {
-                      final Subject sub = Subject(
-                          subject: 'Test',
-                          time: '11-12',
-                          subjectTeacher:
-                              'Rohan Karnsdfffffffffffffffffffffffffffffffsdfffffffffffffffffffffffffffffffffffffffffffffffff',
-                          roomNo: '5b-79',
-                          isUserAdded: true);
-                      UploadHive().uploadHive(sub, 'Tuesday');
-                    }))
+              child: CustomSubmitButton(
+                title: "Submit",
+                onTap: () {},
+              ),
+            )
           ],
         ),
       ),
