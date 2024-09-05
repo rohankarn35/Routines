@@ -11,9 +11,7 @@ import 'package:routines/features/auth/data/models/HiveModel/UserEntityModel.dar
 import 'package:routines/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:routines/features/auth/presentation/pages/selection_page.dart';
 import 'package:routines/features/main/presentation/bloc/routine_bloc.dart';
-import 'package:routines/features/main/presentation/pages/mainAlarmPage.dart';
 import 'package:routines/features/main/presentation/pages/mainpage.dart';
-import 'package:routines/features/main/presentation/pages/notification.dart';
 import 'package:routines/injection.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
@@ -29,8 +27,6 @@ void main() async {
 
   await Hive.openBox<DaySchedule>('timetable');
   await Hive.openBox<Userentitymodel>('user');
-
-  // print(await FlutterSystemRingtones.getAlarmSounds());
 
   initDependencies();
   await Alarm.init();
@@ -61,8 +57,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
-    // TODO: implement initS
-    // tate
     super.initState();
     context.read<AuthBloc>().add(AuthCheckUserEvent());
   }

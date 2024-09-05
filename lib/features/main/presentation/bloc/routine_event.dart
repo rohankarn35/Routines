@@ -14,3 +14,22 @@ final class RoutineChangeDropDownValueEvent extends RoutineEvent {
 
   RoutineChangeDropDownValueEvent({required this.day});
 }
+
+final class RoutineSelectStartTimeEvent extends RoutineEvent {
+  final String? time;
+
+  RoutineSelectStartTimeEvent({required this.time});
+}
+
+final class RoutineSelectEndTimeEvent extends RoutineEvent {
+  final String? time;
+
+  RoutineSelectEndTimeEvent({required this.time});
+}
+
+final class RoutineUploadToHiveEvent extends RoutineEvent {
+  final Subject subject;
+  final String day;
+
+  RoutineUploadToHiveEvent({required this.subject, required this.day});
+}

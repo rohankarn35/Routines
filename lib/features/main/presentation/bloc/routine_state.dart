@@ -26,3 +26,21 @@ final class RoutineChangeDropDownValueState extends RoutineState {
 
   RoutineChangeDropDownValueState({required this.day});
 }
+
+final class RoutineStartTimeSelectedState extends RoutineState {
+  final String? startTime;
+
+  RoutineStartTimeSelectedState({required this.startTime});
+}
+
+final class RoutineEndTimeSelectedState extends RoutineState {
+  final String? endTime;
+
+  RoutineEndTimeSelectedState({required this.endTime});
+}
+
+final class RoutineAddSucess extends RoutineState {
+  final String day;
+
+  RoutineAddSucess({required this.day});
+}

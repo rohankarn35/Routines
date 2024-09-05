@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 
 void sortSubjectsByTimeForDay(String day) {
   final box = Boxes.getData();
-  DaySchedule? daySchedule = box.get(day.substring(0, 2).toUpperCase());
+  DaySchedule? daySchedule = box.get(day);
+  // print(daySchedule?.subjects.length);
 
   if (daySchedule != null && daySchedule.subjects.isNotEmpty) {
     daySchedule.subjects.sort((a, b) {

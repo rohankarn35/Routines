@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:routines/core/data/subject.dart';
+import 'package:routines/core/utils/toastbar.dart';
 import 'package:routines/features/auth/presentation/widgets/customSubmitButton.dart';
+import 'package:routines/features/main/presentation/bloc/routine_bloc.dart';
 import 'package:routines/features/main/presentation/pages/widgets/customDropDown.dart';
 import 'package:routines/features/main/presentation/pages/widgets/customTextfield.dart';
 import 'package:routines/features/main/presentation/pages/widgets/CustomTimePicker.dart';
 import 'package:routines/features/main/presentation/pages/widgets/routineTimeWidget.dart';
+import 'package:routines/features/main/presentation/utils/checkAddRoutines.dart';
+import 'package:routines/features/main/presentation/utils/checkTimeAlreadyExist.dart';
 
 class CustomAddRoutinesDialog extends StatefulWidget {
   const CustomAddRoutinesDialog({super.key});
@@ -17,11 +22,23 @@ class CustomAddRoutinesDialog extends StatefulWidget {
 }
 
 class _CustomAddRoutinesDialogState extends State<CustomAddRoutinesDialog> {
-  String? selectedDay;
+  String? day;
   final TextEditingController subjectTextController = TextEditingController();
   final TextEditingController teacherTextController = TextEditingController();
   final TextEditingController roomNoTextController = TextEditingController();
-  final TextEditingController daytextController = TextEditingController();
+  String time = "";
+  String? startTime;
+  String? endTime;
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+
+    subjectTextController.dispose();
+    teacherTextController.dispose();
+    roomNoTextController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,19 +59,19 @@ class _CustomAddRoutinesDialogState extends State<CustomAddRoutinesDialog> {
             // Text Box
 
             CustomTextField()
-                .customTextField(TextEditingController(), 'Enter Subject Name'),
+                .customTextField(subjectTextController, 'Enter Subject Name'),
             const SizedBox(
               height: 20,
             ),
 
             CustomTextField()
-                .customTextField(TextEditingController(), 'Enter Teacher Name'),
+                .customTextField(teacherTextController, 'Enter Teacher Name'),
             const SizedBox(
               height: 20,
             ),
 
             CustomTextField()
-                .customTextField(TextEditingController(), 'Enter RoomNo'),
+                .customTextField(roomNoTextController, 'Enter RoomNo'),
 
             const SizedBox(
               height: 20,
@@ -69,7 +86,7 @@ class _CustomAddRoutinesDialogState extends State<CustomAddRoutinesDialog> {
                     Radius.circular(14),
                   ),
                 ),
-                child: const Routinetimewidget(),
+                child: Routinetimewidget(),
               ),
             ),
             const SizedBox(
@@ -77,9 +94,64 @@ class _CustomAddRoutinesDialogState extends State<CustomAddRoutinesDialog> {
             ),
 
             Center(
-              child: CustomSubmitButton(
-                title: "Submit",
-                onTap: () {},
+              child: BlocListener<RoutineBloc, RoutineState>(
+                listener: (context, state) {
+                  if (state is RoutineStartTimeSelectedState) {
+                    startTime = state.startTime;
+                  }
+                  if (state is RoutineEndTimeSelectedState) {
+                    endTime = state.endTime;
+                  }
+                  if (state is RoutineChangeDropDownValueState) {
+                    day = state.day;
+                  }
+                },
+                child: CustomSubmitButton(
+                  title: "Submit",
+                  onTap: () {
+                    time = "$startTime-$endTime";
+
+                    Map<String, dynamic> status = checkAddRoutines(
+                        teacherName: teacherTextController.text.trim(),
+                        subjectName: subjectTextController.text.trim(),
+                        roomNo: roomNoTextController.text.trim(),
+                        time: time,
+                        day: day);
+
+                    // print(startTime);
+                    // print(endTime);
+
+                    if (checkTimeAlreadyExist(
+                        day ?? "", startTime ?? "", endTime ?? "")) {
+                      if (startTime != null && endTime != null) {
+                        if (status['status']) {
+                          final String _day =
+                              day!.substring(0, 3).toUpperCase();
+
+                          final Subject sub = Subject(
+                            subject: subjectTextController.text.trim(),
+                            time: time,
+                            subjectTeacher: subjectTextController.text.trim(),
+                            roomNo: roomNoTextController.text.trim(),
+                          );
+                          context.read<RoutineBloc>().add(
+                              RoutineUploadToHiveEvent(
+                                  subject: sub, day: _day));
+
+                          Navigator.pop(context);
+                        } else {
+                          showToast(status['message'], Colors.red);
+                        }
+                      } else {
+                        showToast("Select the time", Colors.red);
+                      }
+                    } else {
+                      showToast(
+                          "The time slot you selected overlaps with an existing class. Please choose a different time.",
+                          Colors.red);
+                    }
+                  },
+                ),
               ),
             )
           ],
