@@ -8,7 +8,7 @@ import 'package:routines/features/main/presentation/pages/widgets/shakingAlarmIc
 import 'package:slide_to_act/slide_to_act.dart';
 
 class MainAlarmPage extends StatefulWidget {
-  final int id; // Use lower camel case for variable names
+  final int id;
   const MainAlarmPage({super.key, required this.id});
 
   @override
@@ -20,7 +20,7 @@ class _MainAlarmPageState extends State<MainAlarmPage> {
   void initState() {
     super.initState();
     WidgetsFlutterBinding.ensureInitialized();
-    // FlutterRingtonePlayer().playAlarm();
+    FlutterRingtonePlayer().playAlarm();
   }
 
   @override
@@ -55,10 +55,10 @@ class _MainAlarmPageState extends State<MainAlarmPage> {
                 // textStyle: TextStyle(),
                 outerColor: const Color.fromARGB(255, 97, 13, 7),
                 onSubmit: () async {
-                  // Navigator.pop(context);
+                  Navigator.pop(context);
                   await Alarm.stop(widget.id);
-                  // FlutterRingtonePlayer().stop();
-                  exit(0);
+                  FlutterRingtonePlayer().stop();
+                  // exit(0);
                 },
               ),
             )

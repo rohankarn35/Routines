@@ -8,8 +8,8 @@ class CustomTextField {
     return TextField(
       controller: controller,
       decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: TextStyle(color: Colors.grey[600]),
+        labelText: hintText,
+        labelStyle: TextStyle(color: Colors.grey[400]),
         filled: true,
         contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
         border: OutlineInputBorder(

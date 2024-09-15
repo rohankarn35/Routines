@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:routines/features/main/presentation/pages/widgets/customListtile.dart';
-import 'package:routines/features/main/presentation/pages/widgets/customAddRoutinesDialog.dart';
-import 'package:routines/features/main/presentation/pages/widgets/CustomTimePicker.dart';
+import 'package:routines/features/main/presentation/pages/widgets/customRoutineDialog.dart';
 
 class MainBottomSheet {
   static void mainshowModalBottomSheet(BuildContext context) {
@@ -34,13 +33,17 @@ class MainBottomSheet {
                     })),
             CustomListTile.customListTile(Icons.add, "Add Routines", () {
               Navigator.pop(context);
+              final TextEditingController subjectTextController =
+                  TextEditingController();
+              final TextEditingController teacherTextController =
+                  TextEditingController();
+              final TextEditingController roomNoTextController =
+                  TextEditingController();
 
-              CustomDialog().showCustomDialog(context);
-            }),
-            CustomListTile.customListTile(Icons.sync, "Sync Routines", () {}),
-            CustomListTile.customListTile(Icons.edit, "Edit Section", () {
-              // Customupdateroutinedialog();
-              // CustomTimePicker();
+              CustomDialog().showCustomDialog(context, null, null, null, null,
+                  subjectTextController: subjectTextController,
+                  teacherTextController: teacherTextController,
+                  roomNoTextController: roomNoTextController);
             }),
             CustomListTile.customListTile(Icons.info, "About", () {}),
             CustomListTile.customListTile(Icons.logout, "Logout", () {}),

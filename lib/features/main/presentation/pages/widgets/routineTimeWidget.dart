@@ -4,6 +4,10 @@ import 'package:routines/features/main/presentation/bloc/routine_bloc.dart';
 import 'package:routines/features/main/presentation/pages/widgets/CustomTimePicker.dart';
 
 class Routinetimewidget extends StatefulWidget {
+  final String? startTime;
+  final String? endTime;
+
+  const Routinetimewidget({super.key, this.startTime, this.endTime});
   @override
   State<Routinetimewidget> createState() => _RoutinetimewidgetState();
 }
@@ -13,6 +17,16 @@ class _RoutinetimewidgetState extends State<Routinetimewidget> {
   String? endTime;
   TimeOfDay? startTimeofDay;
   TimeOfDay? endTimeofDay;
+
+  @override
+  void initState() {
+    startTimeofDay = parseTimeOfDay(widget.startTime);
+    endTimeofDay = parseTimeOfDay(widget.endTime);
+    startTime = widget.startTime;
+    endTime = widget.endTime;
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

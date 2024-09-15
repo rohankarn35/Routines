@@ -76,14 +76,14 @@ class _NotificationPageState extends State<NotificationPage> {
 
     final alarmSettings = AlarmSettings(
         id: 42,
-        dateTime: DateTime.now().add(Duration(seconds: 8)),
+        dateTime: DateTime.now().add(Duration(seconds: 10)),
         assetAudioPath: musicPath,
         loopAudio: true,
         vibrate: true,
         // volume: 0.8,
         fadeDuration: 3.0,
-        notificationTitle: 'This is the test alarm',
-        notificationBody: 'Click here to off the alarm',
+        notificationTitle: 'Good Morning',
+        notificationBody: 'Click here to dismiss Alarm',
         androidFullScreenIntent: true);
     await Alarm.set(
       alarmSettings: alarmSettings,

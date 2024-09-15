@@ -16,15 +16,19 @@ class DailyRoutineTabBarView extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.only(top: 30),
-      child: TabBarView(
-        controller: tabController,
-        children: days.map((day) {
-          return BlocProvider(
-            create: (context) => serviceLocator<RoutineBloc>()
-              ..add(LoadDataFromHiveEvent(day: day)),
-            child: buildDailySchedule(day, context),
+      child: BlocBuilder<RoutineBloc, RoutineState>(
+        builder: (context, state) {
+          return TabBarView(
+            controller: tabController,
+            children: days.map((day) {
+              return BlocProvider(
+                create: (context) => serviceLocator<RoutineBloc>()
+                  ..add(LoadDataFromHiveEvent(day: day)),
+                child: buildDailySchedule(day, context),
+              );
+            }).toList(),
           );
-        }).toList(),
+        },
       ),
     );
   }

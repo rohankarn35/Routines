@@ -87,9 +87,11 @@ void _initMain() {
 
   serviceLocator.registerLazySingleton(() => GetFromHive(serviceLocator()));
   serviceLocator.registerLazySingleton(() => DeleteFromHive(serviceLocator()));
+
   serviceLocator.registerFactory(() => RoutineBloc(
         updateHiveData: serviceLocator(),
         uploadToHive: serviceLocator(),
         getFromHive: serviceLocator(),
+        deleteFromHive: serviceLocator(),
       ));
 }

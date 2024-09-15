@@ -44,3 +44,5 @@ final class RoutineAddSucess extends RoutineState {
 
   RoutineAddSucess({required this.day});
 }
+
+final class RoutineSucess extends RoutineState {}

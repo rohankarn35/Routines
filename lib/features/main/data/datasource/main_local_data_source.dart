@@ -67,6 +67,7 @@ class MainLocalDataSourceImpl implements MainLocalDataSource {
     DaySchedule? schedule = box.get(_day);
     if (schedule != null) {
       if (index != -1) {
+        subject.isUserAdded = true;
         schedule.subjects[index] = subject;
         schedule.save();
         sortSubjectsByTimeForDay(_day);

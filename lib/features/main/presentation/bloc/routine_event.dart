@@ -33,3 +33,20 @@ final class RoutineUploadToHiveEvent extends RoutineEvent {
 
   RoutineUploadToHiveEvent({required this.subject, required this.day});
 }
+
+final class RoutineDeleteFromHiveEvent extends RoutineEvent {
+  final Subject sub;
+  final String day;
+
+  RoutineDeleteFromHiveEvent({required this.day, required this.sub});
+}
+
+final class RoutineEditFromHiveEvent extends RoutineEvent {
+  final Subject sub;
+
+  final String day;
+  final int index;
+
+  RoutineEditFromHiveEvent(
+      {required this.index, required this.sub, required this.day});
+}

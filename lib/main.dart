@@ -15,6 +15,8 @@ import 'package:routines/features/main/presentation/pages/mainpage.dart';
 import 'package:routines/injection.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
+import 'features/main/presentation/pages/notification.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -68,19 +70,19 @@ class _MyAppState extends State<MyApp> {
       title: 'Routines',
       theme: AppTheme.darkThemeMode,
       onGenerateRoute: AppRoutes.generateRoute,
-      home: BlocSelector<AppUserCubit, AppUserState, bool>(
-        selector: (state) {
-          return state is AppUserLoggedIn;
-        },
-        builder: (context, isUserLoggin) {
-          if (isUserLoggin) {
-            return Mainpage();
-          } else {
-            return SelectionPage();
-          }
-        },
-      ),
-      // home: NotificationPage(),
+      // home: BlocSelector<AppUserCubit, AppUserState, bool>(
+      //   selector: (state) {
+      //     return state is AppUserLoggedIn;
+      //   },
+      //   builder: (context, isUserLoggin) {
+      //     if (isUserLoggin) {
+      //       return Mainpage();
+      //     } else {
+      //       return SelectionPage();
+      //     }
+      //   },
+      // ),
+      home: NotificationPage(),
       // home: MainAlarmPage(id: 42),
     );
   }

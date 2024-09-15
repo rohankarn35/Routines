@@ -2,7 +2,12 @@ import 'package:routines/core/data/daySchedule.dart';
 import 'package:routines/core/data/subject.dart';
 import 'package:routines/core/hiveUtils/boxes.dart';
 
-bool checkTimeAlreadyExist(String day, String starttime, String endtime) {
+bool checkTimeAlreadyExist(
+  String day,
+  String starttime,
+  String endtime,
+  int? index,
+) {
   try {
     final box = Boxes.getData();
     DaySchedule? daySchedule;
@@ -12,15 +17,21 @@ bool checkTimeAlreadyExist(String day, String starttime, String endtime) {
     }
 
     if (daySchedule != null) {
-      for (Subject subject in daySchedule.subjects) {
+      for (int i = 0; i < daySchedule.subjects.length; i++) {
+        // Skip the subject at the provided index if it's not null and matches
+        if (index != null && i == index) {
+          continue;
+        }
+
+        Subject subject = daySchedule.subjects[i];
         List<String> timeRange = subject.time.split('-');
         String existingStartTime = timeRange[0];
         if (!existingStartTime.contains(":")) {
-          existingStartTime = '$existingStartTime' ":00";
+          existingStartTime = '$existingStartTime:00';
         }
         String existingEndTime = timeRange[1];
         if (!existingEndTime.contains(":")) {
-          existingEndTime = '$existingEndTime' ":00";
+          existingEndTime = '$existingEndTime:00';
         }
 
         double newStartTime = convertTo24HourFormat(starttime);
@@ -51,6 +62,8 @@ double convertTo24HourFormat(String time) {
   double hour = double.parse(parts[0]);
   double minute = double.parse(parts[1]);
   minute = minute / 60;
+
+  // Convert hour to 24-hour format
   if (hour < 8) {
     hour += 12;
   }

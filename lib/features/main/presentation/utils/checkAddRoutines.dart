@@ -34,12 +34,8 @@ Map<String, dynamic> checkAddRoutines({
         "status": false,
         "message": "Time should be more than one character."
       };
-    } else if (newStartTime - newEndTime < 0.25) {
-      return {
-        "status": false,
-        "message":
-            "StartTime and EndTime should have at least 15 mins difference"
-      };
+    } else if (newStartTime > newEndTime) {
+      return {"status": false, "message": "Endtime should be after Starttime"};
     } else {
       return {"status": true, "message": "Routine added successfully."};
     }
